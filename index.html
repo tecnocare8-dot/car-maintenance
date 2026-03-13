@@ -9,7 +9,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="送迎車メンテ">
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json" id="manifest-link">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
 <style>
@@ -782,11 +782,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 <script>
 // ═══════════ DATA ═══════════
 const DEFAULT_VEHICLES = [
-  {id:'v1',name:'さくら1号',plate:'大阪 500 あ 1234',type:'ハイエース',odo:82450,ownerType:'purchase',purchasePrice:2800000,leaseMonthly:0,carTax:43500,weightTax:32800,jibaiseki:27840},
-  {id:'v2',name:'さくら2号',plate:'大阪 500 い 5678',type:'ハイエース',odo:61200,ownerType:'lease',purchasePrice:0,leaseMonthly:45000,carTax:0,weightTax:0,jibaiseki:0},
-  {id:'v3',name:'さくら3号',plate:'大阪 500 う 9012',type:'キャラバン',odo:95800,ownerType:'purchase',purchasePrice:2500000,leaseMonthly:0,carTax:43500,weightTax:32800,jibaiseki:27840},
-  {id:'v4',name:'さくら4号',plate:'大阪 500 え 3456',type:'ハイエース',odo:42100,ownerType:'lease',purchasePrice:0,leaseMonthly:48000,carTax:0,weightTax:0,jibaiseki:0},
-  {id:'v5',name:'さくら5号',plate:'大阪 500 お 7890',type:'キャラバン',odo:28600,ownerType:'purchase',purchasePrice:2200000,leaseMonthly:0,carTax:43500,weightTax:32800,jibaiseki:27840},
+  {id:'v1',name:'さくら1号',plate:'大阪 500 あ 1234',type:'ハイエース',odo:0,ownerType:'purchase',purchasePrice:0,leaseMonthly:0,carTax:0,weightTax:0,jibaiseki:0},
+  {id:'v2',name:'さくら2号',plate:'大阪 500 い 5678',type:'ハイエース',odo:0,ownerType:'lease',purchasePrice:0,leaseMonthly:0,carTax:0,weightTax:0,jibaiseki:0},
+  {id:'v3',name:'さくら3号',plate:'大阪 500 う 9012',type:'キャラバン',odo:0,ownerType:'purchase',purchasePrice:0,leaseMonthly:0,carTax:0,weightTax:0,jibaiseki:0},
+  {id:'v4',name:'さくら4号',plate:'大阪 500 え 3456',type:'ハイエース',odo:0,ownerType:'lease',purchasePrice:0,leaseMonthly:0,carTax:0,weightTax:0,jibaiseki:0},
+  {id:'v5',name:'さくら5号',plate:'大阪 500 お 7890',type:'キャラバン',odo:0,ownerType:'purchase',purchasePrice:0,leaseMonthly:0,carTax:0,weightTax:0,jibaiseki:0},
 ];
 
 function load(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
@@ -1494,17 +1494,27 @@ function exportData(){
 }
 
 function execClear(){
-  ['fuel_recs','oil_recs','maint_recs','vehicles_v4','oil_setting','staff_name'].forEach(k=>localStorage.removeItem(k));
+  // PINだけ退避
+  const savedPin = localStorage.getItem('app_pin');
+  // 全消去
+  localStorage.clear();
+  sessionStorage.clear();
+  // PINだけ戻す
+  if(savedPin) localStorage.setItem('app_pin', savedPin);
+  sessionStorage.setItem('pin_ok','1');
+  // メモリをまっさらに
   fuelRecs=[];oilRecs=[];maintRecs=[];
   vehicles=JSON.parse(JSON.stringify(DEFAULT_VEHICLES));
   oilSetting={mode:'km',threshKm:5000,warnKm:500,threshMonth:3};
   staffName='';
-  populateSelects();
   closeModal();
-  renderHome();
-  renderFuelHist();
-  renderSettings();
-  showToast('🗑️ データを削除しました');
+  setTimeout(()=>{
+    populateSelects();
+    renderHome();
+    renderFuelHist();
+    renderSettings();
+    showToast('🗑️ すべてリセットしました');
+  }, 100);
 }
 
 // ═══════════ HIST ITEM ═══════════
@@ -1625,7 +1635,7 @@ function initPin() {
 </script>
 
 <script>
-if('serviceWorker' in navigator){
+if('serviceWorker' in navigator && location.protocol !== 'file:'){
   window.addEventListener('load', ()=>{
     navigator.serviceWorker.register('service-worker.js')
       .then(r=>console.log('SW registered'))
