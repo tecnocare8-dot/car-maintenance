@@ -1480,9 +1480,16 @@ function exportData(){
 }
  
 function confirmClear(){
-  if(confirm('全データを削除しますか？元に戻せません。')){
-    ['fuel_recs','oil_recs','maint_recs'].forEach(k=>localStorage.removeItem(k));
-    fuelRecs=[];oilRecs=[];maintRecs=[];renderHome();renderFuelHist();
+  if(confirm('全データを削除しますか？\n記録・車両設定・PIN以外すべてリセットされます。\n元に戻せません。')){
+    ['fuel_recs','oil_recs','maint_recs','vehicles_v4','oil_setting','staff_name'].forEach(k=>localStorage.removeItem(k));
+    fuelRecs=[];oilRecs=[];maintRecs=[];
+    vehicles=JSON.parse(JSON.stringify(DEFAULT_VEHICLES));
+    oilSetting={mode:'km',threshKm:5000,warnKm:500,threshMonth:3};
+    staffName='';
+    populateSelects();
+    renderHome();
+    renderFuelHist();
+    renderSettings();
     showToast('🗑️ データを削除しました');
   }
 }
