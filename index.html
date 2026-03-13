@@ -677,6 +677,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     <div class="modal-handle"></div>
     <div class="modal-title">🚐 車両設定</div>
     <div id="vehicle-setting-list"></div>
+    <button class="btn" style="background:var(--success-dim);color:var(--success);border:1.5px solid rgba(40,217,126,.3);margin-bottom:10px" onclick="addVehicle()">＋ 車両を追加</button>
     <button class="btn btn-p" onclick="saveVehicleSettings()">✅ 保存する</button>
     <button class="btn btn-g" onclick="closeModal()">閉じる</button>
   </div>
@@ -1370,9 +1371,14 @@ function openVehicleModal(){
     <div class="vsi" style="margin-bottom:12px">
       <div class="vsi-top">
         <span style="font-size:20px">🚐</span>
-        <div><div class="vsi-name">${v.name}</div><div class="vsi-plate-badge">${v.plate}</div></div>
+        <div><div class="vsi-name" id="vsi-name-disp-${v.id}">${v.name}</div><div class="vsi-plate-badge">${v.plate}</div></div>
+        <button onclick="deleteVehicle('${v.id}')" style="margin-left:auto;background:var(--danger-dim);border:1px solid rgba(255,79,94,.3);color:var(--danger);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">🗑️ 削除</button>
       </div>
       <div style="margin-bottom:10px">
+        <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">車両名</div>
+        <input type="text" class="fi" id="vsi-name-${v.id}" value="${v.name}" placeholder="さくら1号" style="margin-bottom:0">
+      </div>
+      <div>
         <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">購入 / リース</div>
         <div class="type-toggle">
           <button class="type-btn ${v.ownerType==='purchase'?'active-purchase':''}" onclick="setOwnerType('${v.id}','purchase',this)">🔑 購入</button>
@@ -1437,6 +1443,8 @@ function saveVehicleSettings(){
     const plate=document.getElementById(`vsi-plate-${v.id}`);
     const price=document.getElementById(`vsi-purchase-${v.id}-price`);
     const monthly=document.getElementById(`vsi-lease-${v.id}-monthly`);
+    const nameEl=document.getElementById(`vsi-name-${v.id}`);
+    if(nameEl && nameEl.value.trim()) v.name=nameEl.value.trim();
     if(odo)   v.odo=parseInt(odo.value)||v.odo;
     if(plate) v.plate=plate.value||v.plate;
     if(price) v.purchasePrice=parseInt(price.value)||0;
@@ -1454,6 +1462,26 @@ function saveVehicleSettings(){
   showToast('✅ 車両設定を保存しました');
   closeModal();
   renderHome();
+}
+
+
+// ═══════════ VEHICLE ADD / DELETE ═══════════
+function addVehicle(){
+  const newId='v'+Date.now();
+  vehicles.push({id:newId,name:'新しい車両',plate:'',type:'',odo:0,ownerType:'purchase',purchasePrice:0,leaseMonthly:0,carTax:0,weightTax:0,jibaiseki:0});
+  openVehicleModal();
+  // 追加した車両カードまでスクロール
+  setTimeout(()=>{
+    const el=document.getElementById('vsi-name-'+newId);
+    if(el){el.focus();el.select();}
+  },100);
+}
+
+function deleteVehicle(vid){
+  if(vehicles.length<=1){showToast('⚠️ 車両は最低1台必要です',true);return;}
+  vehicles=vehicles.filter(v=>v.id!==vid);
+  openVehicleModal();
+  showToast('🗑️ 車両を削除しました');
 }
 
 // ═══════════ OIL ALERT ═══════════
