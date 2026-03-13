@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>送迎車 メンテ管理</title>
+<meta name="theme-color" content="#111820">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="送迎車メンテ">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f14;--bg2:#111820;--bg3:#172030;--surface:#1c2838;--surface2:#223044;--border:#263550;
+  --primary:#4facff;--primary-dim:rgba(79,172,255,.14);
+  --accent:#ffbe30;--accent-dim:rgba(255,190,48,.13);
+  --danger:#ff4f5e;--danger-dim:rgba(255,79,94,.14);
+  --success:#28d97e;--success-dim:rgba(40,217,126,.12);
+  --warn:#ff9f30;--warn-dim:rgba(255,159,48,.14);
+  --purple:#b47fff;--purple-dim:rgba(180,127,255,.14);
+  --text:#ddeeff;--text2:#5a86a8;--text3:#2e4a60;
+  --r:14px;--r-sm:10px;--tab-h:68px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;overscroll-behavior:none}
+.app{display:flex;flex-direction:column;height:100dvh;max-width:430px;margin:0 auto;background:var(--bg)}
+
+/* HEADER */
+.hdr{background:var(--bg2);padding:50px 18px 13px;border-bottom:1px solid var(--border);flex-shrink:0}
+.hdr-row{display:flex;align-items:center;justify-content:space-between}
+.hdr-title{font-family:'Zen Kaku Gothic New',sans-serif;font-size:19px;font-weight:900}
+.hdr-title em{color:var(--primary);font-style:normal}
+.hdr-sub{font-size:11px;color:var(--text3);margin-top:3px}
+.hdr-icon{width:36px;height:36px;background:var(--primary-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+
+/* SCROLL */
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;padding-bottom:calc(var(--tab-h)+20px)}
+
+/* PAGE */
+.page{display:none}.page.active{display:block}
+
+/* TAB BAR */
+.tab-bar{height:var(--tab-h);background:var(--bg2);border-top:1px solid var(--border);display:flex;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+.tb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;color:var(--text3);font-size:9px;font-weight:700;letter-spacing:.02em;transition:color .15s;padding-top:5px}
+.tb.active{color:var(--primary)}
+.tb-ic{font-size:18px;width:30px;height:27px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:background .15s}
+.tb.active .tb-ic{background:var(--primary-dim)}
+
+/* ALERT */
+.alert-bar{background:linear-gradient(90deg,var(--danger-dim),transparent);border:1px solid rgba(255,79,94,.4);border-radius:var(--r-sm);padding:11px 13px;display:flex;gap:9px;margin-bottom:12px}
+.alert-bar-ic{font-size:15px;flex-shrink:0;margin-top:1px}
+.alert-bar-txt{font-size:12px;color:var(--danger);font-weight:600;line-height:1.6}
+
+/* COST HERO */
+.cost-hero{background:linear-gradient(135deg,#0e1f33,var(--surface));border-radius:var(--r);padding:18px;border:1px solid var(--border);margin-bottom:12px}
+.ch-lbl{font-size:11px;color:var(--text2);margin-bottom:3px}
+.ch-val{font-family:'Zen Kaku Gothic New',sans-serif;font-size:32px;font-weight:900;color:var(--primary);line-height:1}
+.ch-val span{font-size:12px;color:var(--text2);margin-left:5px;font-family:'Noto Sans JP',sans-serif;font-weight:400}
+.ch-bk{display:grid;gap:8px;margin-top:13px}
+.ch-bk-item{background:var(--bg3);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
+.ch-bk-lbl{font-size:11px;color:var(--text2)}
+.ch-bk-val{font-size:13px;font-weight:700}
+
+/* SEC HDR */
+.sh{display:flex;align-items:center;justify-content:space-between;margin:16px 0 9px}
+.sh-t{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.09em}
+.sh-a{font-size:11px;color:var(--primary);cursor:pointer}
+
+/* OIL LIST */
+.oil-list{display:flex;flex-direction:column;gap:8px}
+.oil-card{background:var(--surface);border-radius:var(--r-sm);padding:13px;display:flex;align-items:center;gap:11px;border-left:3px solid var(--border)}
+.oil-card.ov{border-left-color:var(--danger)}.oil-card.soon{border-left-color:var(--warn)}.oil-card.ok{border-left-color:var(--success)}
+.oil-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.oil-ic.ov{background:var(--danger-dim)}.oil-ic.soon{background:var(--warn-dim)}.oil-ic.ok{background:var(--success-dim)}
+.oil-info{flex:1;min-width:0}
+.oil-car{font-size:13px;font-weight:700}
+.oil-detail{font-size:10px;color:var(--text2);margin-top:2px;line-height:1.55}
+.oil-right{text-align:right;flex-shrink:0}
+.oil-rem{font-size:12px;font-weight:700}
+.oil-rem.ov{color:var(--danger)}.oil-rem.soon{color:var(--warn)}.oil-rem.ok{color:var(--success)}
+.oil-nxt{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* HIST */
+.hist-list{display:flex;flex-direction:column;gap:8px}
+.hist-item{background:var(--surface);border-radius:var(--r-sm);padding:12px;display:flex;align-items:center;gap:11px}
+.hist-ic{width:34px;height:34px;border-radius:9px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.hist-info{flex:1;min-width:0}
+.hist-main{font-size:13px;font-weight:700}
+.hist-sub{font-size:10px;color:var(--text2);margin-top:2px;line-height:1.5}
+.hist-right{text-align:right;flex-shrink:0}
+.hist-cost{font-size:12px;font-weight:700;color:var(--accent)}
+.hist-date{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* VEHICLE TABLE */
+.vtable{background:var(--surface);border-radius:var(--r);overflow:hidden;margin-bottom:12px}
+.vtr{display:grid;grid-template-columns:22px 1fr auto auto;align-items:center;gap:10px;padding:12px 13px;border-bottom:1px solid var(--border)}
+.vtr:last-child{border-bottom:none}
+.vtr.vhd{background:var(--bg3);padding:8px 13px}
+.vhd-t{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase}
+.vtr-name{font-size:13px;font-weight:700}
+.vtr-km{font-size:10px;color:var(--text2)}
+.vtr-cost{font-size:13px;font-weight:700;color:var(--accent);text-align:right}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.bg-r{background:var(--danger-dim);color:var(--danger)}
+.bg-o{background:var(--warn-dim);color:var(--warn)}
+.bg-g{background:var(--success-dim);color:var(--success)}
+.bg-b{background:var(--primary-dim);color:var(--primary)}
+.bg-p{background:var(--purple-dim);color:var(--purple)}
+.bg-gr{background:var(--bg3);color:var(--text2)}
+
+/* FUEL SUMMARY */
+.fuel-card{background:var(--surface);border-radius:var(--r);padding:15px;margin-bottom:10px}
+.fuel-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.fuel-name{font-size:14px;font-weight:700}
+.fuel-plate{font-size:10px;color:var(--text2);background:var(--bg3);padding:2px 7px;border-radius:4px;display:inline-block;margin-top:2px;letter-spacing:.04em}
+.fuel-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.fuel-stat{background:var(--bg3);border-radius:8px;padding:9px;text-align:center}
+.fuel-stat-val{font-size:14px;font-weight:900;font-family:'Zen Kaku Gothic New',sans-serif}
+.good{color:var(--success)}.bad{color:var(--danger)}.neu{color:var(--accent)}
+.fuel-stat-lbl{font-size:9px;color:var(--text3);margin-top:2px}
+
+/* FORM */
+.form-card{background:var(--surface);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.fc-title{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.fg{margin-bottom:13px}
+.fg label{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:6px}
+.fi{width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:11px 12px;color:var(--text);font-size:15px;font-family:inherit;-webkit-appearance:none;transition:border-color .15s}
+.fi:focus{outline:none;border-color:var(--primary)}
+.fi::placeholder{color:var(--text3)}
+.fi-hint{font-size:10px;color:var(--text3);margin-top:4px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* CALC BOX */
+.calc-box{background:var(--primary-dim);border:1px solid rgba(79,172,255,.3);border-radius:var(--r-sm);padding:12px 14px;margin:4px 0 14px;display:none;align-items:center;gap:20px}
+.calc-box.show{display:flex}
+.calc-main{font-size:24px;font-weight:900;color:var(--primary);font-family:'Zen Kaku Gothic New',sans-serif;line-height:1}
+.calc-sub{font-size:10px;color:var(--text2);margin-top:3px}
+
+/* BTN */
+.btn{width:100%;padding:14px;border-radius:var(--r-sm);border:none;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity .15s,transform .12s}
+.btn:active{opacity:.8;transform:scale(.98)}
+.btn-p{background:var(--primary);color:#fff}
+.btn-a{background:var(--accent);color:#000}
+.btn-g{background:var(--surface2);color:var(--text);margin-top:10px}
+
+/* SETTINGS */
+.setting-card{background:var(--surface);border-radius:var(--r);overflow:hidden;margin-bottom:10px}
+.setting-row{display:flex;align-items:center;padding:14px;border-bottom:1px solid var(--border);gap:12px;cursor:pointer;transition:background .15s}
+.setting-row:last-child{border-bottom:none}
+.setting-row:active{background:var(--surface2)}
+.setting-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.setting-info{flex:1}
+.setting-name{font-size:13px;font-weight:700}
+.setting-desc{font-size:11px;color:var(--text2);margin-top:2px}
+
+/* TOGGLE (purchase/lease) */
+.type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.type-btn{padding:12px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center;transition:all .15s}
+.type-btn.active-purchase{border-color:var(--primary);background:var(--primary-dim);color:var(--primary)}
+.type-btn.active-lease{border-color:var(--purple);background:var(--purple-dim);color:var(--purple)}
+
+/* OIL ALERT OPTIONS */
+.oil-alert-options{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.oil-opt{display:flex;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-sm);padding:13px;cursor:pointer;border:1.5px solid var(--border);transition:border-color .15s}
+.oil-opt.selected{border-color:var(--primary);background:var(--primary-dim)}
+.oil-opt-ic{font-size:18px;flex-shrink:0}
+.oil-opt-info{flex:1}
+.oil-opt-name{font-size:13px;font-weight:700}
+.oil-opt-desc{font-size:11px;color:var(--text2);margin-top:2px}
+.oil-opt-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .15s}
+.oil-opt.selected .oil-opt-check{background:var(--primary);border-color:var(--primary);color:#fff}
+.oil-thresh-wrap{background:var(--bg3);border-radius:var(--r-sm);padding:13px;margin-bottom:14px}
+.oil-thresh-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.oil-thresh-row:last-child{margin-bottom:0}
+.oil-thresh-lbl{font-size:12px;color:var(--text2);width:80px;flex-shrink:0}
+.oil-thresh-input{flex:1;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--text);font-size:14px;font-family:inherit}
+.oil-thresh-input:focus{outline:none;border-color:var(--primary)}
+.oil-thresh-unit{font-size:11px;color:var(--text3);white-space:nowrap}
+
+/* VEHICLE SETTING CARD */
+.vsi{background:var(--surface);border-radius:var(--r);padding:15px;margin-bottom:10px}
+.vsi-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.vsi-name{font-size:14px;font-weight:700}
+.vsi-plate-badge{font-size:10px;color:var(--text2);background:var(--bg3);padding:2px 7px;border-radius:4px;display:inline-block;margin-top:2px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border-radius:22px 22px 0 0;padding:20px 18px 44px;width:100%;max-width:430px;max-height:92dvh;overflow-y:auto;animation:slideUp .25s cubic-bezier(.32,.72,0,1)}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px}
+.modal-title{font-size:17px;font-weight:900;margin-bottom:18px}
+
+/* TOAST */
+.toast{position:fixed;top:58px;left:50%;transform:translateX(-50%);background:var(--success);color:#000;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:500;display:none;white-space:nowrap}
+.toast.show{display:block;animation:toastIn .2s ease}
+.toast.err{background:var(--danger);color:#fff}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+.empty{text-align:center;padding:28px 20px;color:var(--text3);font-size:13px}
+.empty-ic{font-size:34px;margin-bottom:8px;display:block}
+
+/* ── ANALYSIS PAGE ── */
+.period-tabs{display:flex;gap:6px;margin-bottom:14px}
+.ptab{flex:1;padding:9px;border-radius:var(--r-sm);background:var(--surface);color:var(--text2);font-size:12px;font-weight:700;text-align:center;cursor:pointer;border:1.5px solid var(--border);transition:all .15s}
+.ptab.active{background:var(--primary-dim);color:var(--primary);border-color:var(--primary)}
+
+.grand-hero{background:linear-gradient(135deg,#09192e,#0f2540,var(--surface));border-radius:var(--r);padding:18px;border:1px solid var(--border);margin-bottom:12px;position:relative;overflow:hidden}
+.grand-hero::before{content:'¥';position:absolute;right:-8px;top:-14px;font-size:110px;color:rgba(79,172,255,.04);font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;pointer-events:none}
+.gh-lbl{font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin-bottom:3px}
+.gh-total{font-family:'Zen Kaku Gothic New',sans-serif;font-size:36px;font-weight:900;color:var(--primary);line-height:1;margin-bottom:14px}
+.gh-bk{display:flex;flex-direction:column;gap:5px}
+.gh-row{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:rgba(0,0,0,.25);border-radius:7px}
+.gh-row.is-total{background:rgba(79,172,255,.1);border:1px solid rgba(79,172,255,.2)}
+.gh-row.is-total span:first-child{color:var(--primary);font-weight:700}
+.gh-row.is-total span:last-child{color:var(--primary);font-size:15px;font-weight:900}
+.gh-row span:first-child{font-size:11px;color:var(--text2)}
+.gh-row span:last-child{font-size:13px;font-weight:700}
+
+.chart-wrap{background:var(--surface);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.chart-ttl{font-size:11px;color:var(--text2);font-weight:700;margin-bottom:12px}
+.bar-row{display:flex;align-items:flex-end;gap:3px;height:70px;margin-bottom:5px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bar-fill{width:100%;border-radius:3px 3px 0 0;min-height:3px;transition:height .35s}
+.bar-fill.cur{background:var(--accent)}
+.bar-fill.past{background:var(--primary-dim);border:1px solid rgba(79,172,255,.3)}
+.bar-lbl{font-size:8px;margin-top:4px;font-weight:600}
+
+.vc-card{background:var(--surface);border-radius:var(--r);padding:15px;margin-bottom:10px}
+.vc-top{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.vc-name{font-size:14px;font-weight:700}
+.vc-sub{font-size:10px;color:var(--text2);margin-top:2px}
+.vc-amt{margin-left:auto;text-align:right;flex-shrink:0}
+.vc-amt-val{font-size:17px;font-weight:900;font-family:'Zen Kaku Gothic New',sans-serif;color:var(--accent)}
+.vc-amt-lbl{font-size:9px;color:var(--text3);margin-top:1px}
+.vc-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:9px}
+.vc-bk{background:var(--bg3);border-radius:7px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center}
+.vc-bk span:first-child{font-size:10px;color:var(--text2)}
+.vc-bk span:last-child{font-size:12px;font-weight:700}
+.share-bar-wrap{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-bottom:4px}
+.share-bar-fill{height:100%;border-radius:3px;background:var(--primary);transition:width .5s}
+.share-txt{font-size:10px;color:var(--text3)}
+
+/* PURCHASE vs LEASE */
+.pvl-wrap{background:var(--surface);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.pvl-verdict{border-radius:var(--r-sm);padding:14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px}
+.pvl-verdict.purchase{background:var(--success-dim);border:1px solid rgba(40,217,126,.3)}
+.pvl-verdict.lease{background:var(--purple-dim);border:1px solid rgba(180,127,255,.4)}
+.pvl-verdict.neutral{background:var(--bg3);border:1px solid var(--border)}
+.pvl-v-ic{font-size:28px;flex-shrink:0;line-height:1}
+.pvl-v-ttl{font-size:14px;font-weight:700;margin-bottom:4px}
+.pvl-v-sub{font-size:11px;color:var(--text2);line-height:1.65}
+.pvl-cols{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.pvl-col{border-radius:var(--r-sm);padding:13px;border:1px solid var(--border)}
+.pvl-col.purchase{background:rgba(79,172,255,.06);border-color:rgba(79,172,255,.3)}
+.pvl-col.lease{background:rgba(180,127,255,.06);border-color:rgba(180,127,255,.3)}
+.pvl-col-h{font-size:11px;font-weight:700;margin-bottom:10px}
+.pvl-col.purchase .pvl-col-h{color:var(--primary)}
+.pvl-col.lease .pvl-col-h{color:var(--purple)}
+.pvl-col-r{display:flex;justify-content:space-between;font-size:11px;padding:4px 0;border-bottom:1px solid var(--border)}
+.pvl-col-r:last-child{border:none;font-weight:700;font-size:12px;padding-top:8px}
+.pvl-col-r span:last-child{color:var(--text)}
+.sim-section{margin-top:4px}
+.sim-h{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.sim-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sim-lbl{font-size:11px;color:var(--text2);width:100px;flex-shrink:0}
+.sim-inp{flex:1;background:var(--bg3);border:1.5px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--text);font-size:13px;font-family:inherit}
+.sim-inp:focus{outline:none;border-color:var(--primary)}
+.sim-unit{font-size:11px;color:var(--text3);white-space:nowrap}
+.breakeven-box{background:var(--bg3);border-radius:var(--r-sm);padding:14px;margin-top:14px}
+.be-chart{display:flex;gap:3px;height:60px;align-items:flex-end;margin-bottom:8px}
+.be-bar{border-radius:3px 3px 0 0;min-height:3px;transition:height .4s}
+.be-cross{border-left:2px dashed var(--accent);height:100%}
+.breakeven-result{text-align:center}
+.be-val{font-size:22px;font-weight:900;font-family:'Zen Kaku Gothic New',sans-serif;color:var(--accent)}
+.be-lbl{font-size:11px;color:var(--text2);margin-top:3px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<!-- ===== PIN LOGIN OVERLAY ===== -->
+<div class="pin-overlay" id="pin-overlay">
+  <div class="pin-logo">🚐 送迎車メンテ管理</div>
+  <div class="pin-sub">やすらぎ介護サービス</div>
+  <div class="pin-dots">
+    <div class="pin-dot" id="pd0"></div>
+    <div class="pin-dot" id="pd1"></div>
+    <div class="pin-dot" id="pd2"></div>
+    <div class="pin-dot" id="pd3"></div>
+  </div>
+  <div class="pin-error" id="pin-error"></div>
+  <div class="pin-pad">
+    <div class="pin-key" onclick="pinKey('1')">1</div>
+    <div class="pin-key" onclick="pinKey('2')">2</div>
+    <div class="pin-key" onclick="pinKey('3')">3</div>
+    <div class="pin-key" onclick="pinKey('4')">4</div>
+    <div class="pin-key" onclick="pinKey('5')">5</div>
+    <div class="pin-key" onclick="pinKey('6')">6</div>
+    <div class="pin-key" onclick="pinKey('7')">7</div>
+    <div class="pin-key" onclick="pinKey('8')">8</div>
+    <div class="pin-key" onclick="pinKey('9')">9</div>
+    <div class="pin-key zero" onclick="pinKey('0')">0</div>
+    <div class="pin-key del" onclick="pinDel()">⌫</div>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-row">
+      <div>
+        <div class="hdr-title">送迎車 <em>メンテ管理</em></div>
+        <div class="hdr-sub" id="hdr-sub">読み込み中…</div>
+      </div>
+      <div class="hdr-icon">🚐</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== 給油 ===== -->
+    <div id="page-fuel" class="page active">
+      <div class="form-card">
+        <div class="fc-title">⛽ 給油を記録</div>
+        <div class="fg">
+          <label>車両</label>
+          <select class="fi" id="f-vehicle" onchange="calcFuel()"></select>
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label>給油日</label>
+            <input type="date" class="fi" id="f-date">
+          </div>
+          <div class="fg">
+            <label>走行距離 km</label>
+            <input type="number" class="fi" id="f-odo" placeholder="82450" oninput="calcFuel()">
+          </div>
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label>給油量 (L)</label>
+            <input type="number" class="fi" id="f-liter" placeholder="40.0" step="0.1" oninput="calcFuel()">
+          </div>
+          <div class="fg">
+            <label>給油金額 (円)</label>
+            <input type="number" class="fi" id="f-amount" placeholder="7400" oninput="calcFuel()">
+          </div>
+        </div>
+        <div class="fg">
+          <label>給油スタンド</label>
+          <input type="text" class="fi" id="f-stand" placeholder="例：エネオス北">
+        </div>
+        <div class="calc-box" id="fuel-calc">
+          <div>
+            <div class="calc-main" id="fuel-kmpl">—</div>
+            <div class="calc-sub">燃費（km/L）</div>
+          </div>
+          <div>
+            <div class="calc-main" id="fuel-unit" style="font-size:16px">—</div>
+            <div class="calc-sub">単価（円/L）</div>
+          </div>
+        </div>
+        <button class="btn btn-p" onclick="saveFuel()">⛽ 給油記録を保存</button>
+      </div>
+
+      <div class="sh"><span class="sh-t">🕐 給油履歴</span></div>
+      <div class="hist-list" id="fuel-hist"></div>
+    </div>
+
+    <!-- ===== ホーム ===== -->
+    <div id="page-home" class="page">
+      <div class="alert-bar" id="alert-area" style="display:none">
+        <div class="alert-bar-ic">⚠️</div>
+        <div class="alert-bar-txt" id="alert-text"></div>
+      </div>
+
+      <div class="cost-hero">
+        <div class="ch-lbl">今月の維持費合計</div>
+        <div class="ch-val" id="total-cost">¥0<span id="total-month"></span></div>
+        <div class="ch-bk" id="cost-breakdown"></div>
+      </div>
+
+      <div class="sh"><span class="sh-t">🛢️ オイル交換状況</span></div>
+      <div class="oil-list" id="oil-status-list"></div>
+
+      <div class="sh" style="margin-top:18px">
+        <span class="sh-t">🕐 最近の記録</span>
+        <span class="sh-a" onclick="switchTab('hist')">すべて →</span>
+      </div>
+      <div class="hist-list" id="recent-hist"></div>
+    </div>
+
+    <!-- ===== オイル ===== -->
+    <div id="page-oil" class="page">
+      <div class="alert-bar" id="oil-warn-banner" style="display:none">
+        <div class="alert-bar-ic">⚠️</div>
+        <div class="alert-bar-txt" id="oil-warn-text"></div>
+      </div>
+      <div class="form-card">
+        <div class="fc-title">🛢️ オイル交換を記録</div>
+        <div class="fg">
+          <label>車両</label>
+          <select class="fi" id="o-vehicle"></select>
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label>交換日</label>
+            <input type="date" class="fi" id="o-date">
+          </div>
+          <div class="fg">
+            <label>走行距離 km</label>
+            <input type="number" class="fi" id="o-odo" placeholder="82450" oninput="autoNextOdo()">
+          </div>
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label>次回交換 km</label>
+            <input type="number" class="fi" id="o-next-odo" placeholder="87450">
+            <div class="fi-hint" id="o-odo-hint">走行距離を入力すると自動入力</div>
+          </div>
+          <div class="fg">
+            <label>費用 (円)</label>
+            <input type="number" class="fi" id="o-cost" placeholder="7800">
+          </div>
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label>業者名</label>
+            <input type="text" class="fi" id="o-shop" placeholder="整備業者">
+          </div>
+          <div class="fg">
+            <label>次回予定日</label>
+            <input type="date" class="fi" id="o-next-date">
+          </div>
+        </div>
+        <div class="fg">
+          <label>メモ</label>
+          <input type="text" class="fi" id="o-note" placeholder="フィルター交換など">
+        </div>
+        <button class="btn btn-a" onclick="saveOil()">🛢️ オイル交換を記録</button>
+      </div>
+      <div class="sh"><span class="sh-t">🕐 オイル交換履歴</span></div>
+      <div class="hist-list" id="oil-hist"></div>
+    </div>
+
+    <!-- ===== 整備 ===== -->
+    <div id="page-maint" class="page">
+      <div class="form-card">
+        <div class="fc-title">🔧 整備・修理を記録</div>
+        <div class="fr">
+          <div class="fg">
+            <label>日付</label>
+            <input type="date" class="fi" id="m-date">
+          </div>
+          <div class="fg">
+            <label>車両</label>
+            <select class="fi" id="m-vehicle"></select>
+          </div>
+        </div>
+        <div class="fg">
+          <label>種別</label>
+          <select class="fi" id="m-type"></select>
+        </div>
+        <div class="fg">
+          <label>内容・症状</label>
+          <input type="text" class="fi" id="m-content" placeholder="作業内容や不具合の詳細">
+        </div>
+        <div class="fr">
+          <div class="fg">
+            <label>費用 (円)</label>
+            <input type="number" class="fi" id="m-cost" placeholder="0">
+          </div>
+          <div class="fg">
+            <label>業者名</label>
+            <input type="text" class="fi" id="m-shop" placeholder="業者名">
+          </div>
+        </div>
+        <button class="btn btn-p" onclick="saveMaint()">🔧 整備記録を保存</button>
+      </div>
+      <div class="sh"><span class="sh-t">🕐 整備・修理履歴</span></div>
+      <div class="hist-list" id="maint-hist"></div>
+    </div>
+
+    <!-- ===== 集計 ===== -->
+    <div id="page-hist" class="page">
+
+      <!-- 期間切替 -->
+      <div class="period-tabs">
+        <div class="ptab active" id="ptab-month" onclick="setPeriod('month')">今月</div>
+        <div class="ptab" id="ptab-year"  onclick="setPeriod('year')">今年度</div>
+        <div class="ptab" id="ptab-all"   onclick="setPeriod('all')">累計</div>
+      </div>
+
+      <!-- 全車グランドトータル -->
+      <div class="grand-hero">
+        <div class="gh-lbl" id="gh-lbl">全車 今月コスト</div>
+        <div class="gh-total" id="gh-total">¥0</div>
+        <div class="gh-bk" id="gh-bk"></div>
+      </div>
+
+      <!-- 月別コスト推移 -->
+      <div class="chart-wrap">
+        <div class="chart-ttl">📅 月別コスト推移（今年）</div>
+        <div class="bar-row" id="month-bars"></div>
+        <div style="display:flex;gap:3px" id="month-lbls"></div>
+      </div>
+
+      <!-- 車両別コスト -->
+      <div class="sh"><span class="sh-t">🚐 車両別コスト</span></div>
+      <div id="vc-list"></div>
+
+      <!-- 燃費サマリー -->
+      <div class="sh"><span class="sh-t">⛽ 車両別 燃費</span></div>
+      <div id="fuel-summary"></div>
+
+      <!-- 購入 vs リース -->
+      <div class="sh"><span class="sh-t">⚖️ 購入 vs リース 実績比較</span></div>
+      <div class="pvl-wrap">
+        <div id="pvl-verdict-area"></div>
+        <div class="pvl-cols" id="pvl-cols"></div>
+        <div class="sim-section">
+          <div class="sim-h">📐 損益分岐シミュレーター</div>
+          <div class="sim-row">
+            <div class="sim-lbl">購入価格</div>
+            <input type="number" class="sim-inp" id="sim-price" value="2800000" oninput="runSim()">
+            <div class="sim-unit">円</div>
+          </div>
+          <div class="sim-row">
+            <div class="sim-lbl">リース月額</div>
+            <input type="number" class="sim-inp" id="sim-lease" value="45000" oninput="runSim()">
+            <div class="sim-unit">円/月</div>
+          </div>
+          <div class="sim-row">
+            <div class="sim-lbl">年間メンテ費</div>
+            <input type="number" class="sim-inp" id="sim-maint" value="150000" oninput="runSim()">
+            <div class="sim-unit">円/年</div>
+          </div>
+          <div class="sim-row">
+            <div class="sim-lbl">自動車税(年)</div>
+            <input type="number" class="sim-inp" id="sim-cartax" value="43500" oninput="runSim()">
+            <div class="sim-unit">円/年</div>
+          </div>
+          <div class="sim-row">
+            <div class="sim-lbl">重量税(2年毎)</div>
+            <input type="number" class="sim-inp" id="sim-weighttax" value="32800" oninput="runSim()">
+            <div class="sim-unit">円</div>
+          </div>
+          <div class="sim-row">
+            <div class="sim-lbl">自賠責(2年毎)</div>
+            <input type="number" class="sim-inp" id="sim-jibaiseki" value="27840" oninput="runSim()">
+            <div class="sim-unit">円</div>
+          </div>
+          <div class="sim-row">
+            <div class="sim-lbl">車検工賃(2年毎)</div>
+            <input type="number" class="sim-inp" id="sim-shaken" value="60000" oninput="runSim()">
+            <div class="sim-unit">円</div>
+          </div>
+          <div class="breakeven-box">
+            <div class="be-chart" id="be-chart"></div>
+            <div class="breakeven-result">
+              <div class="be-val" id="be-val">—</div>
+              <div class="be-lbl" id="be-lbl">損益分岐点</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== 設定 ===== -->
+    <div id="page-settings" class="page">
+      <div class="sh" style="margin-top:0"><span class="sh-t">⚙️ 設定</span></div>
+      <div class="setting-card">
+        <div class="setting-row" onclick="openModal('modal-vehicles')">
+          <div class="setting-ic" style="background:var(--primary-dim)">🚐</div>
+          <div class="setting-info">
+            <div class="setting-name">車両設定（購入/リース・費用）</div>
+            <div class="setting-desc">購入価格・リース月額・走行距離など</div>
+          </div>
+          <span style="color:var(--text3)">›</span>
+        </div>
+        <div class="setting-row" onclick="openModal('modal-oil-alert')">
+          <div class="setting-ic" style="background:var(--warn-dim)">🛢️</div>
+          <div class="setting-info">
+            <div class="setting-name">オイル交換アラート</div>
+            <div class="setting-desc" id="oil-alert-desc">読み込み中…</div>
+          </div>
+          <span style="color:var(--text3)">›</span>
+        </div>
+        <div class="setting-row" onclick="openModal('modal-staff')">
+          <div class="setting-ic" style="background:var(--success-dim)">👤</div>
+          <div class="setting-info">
+            <div class="setting-name">担当者名</div>
+            <div class="setting-desc" id="staff-desc">未設定</div>
+          </div>
+          <span style="color:var(--text3)">›</span>
+        </div>
+      </div>
+
+      <div class="sh"><span class="sh-t">🔐 セキュリティ</span></div>
+      <div class="setting-card">
+        <div class="setting-row" onclick="openModal('modal-pin')">
+          <div class="setting-ic" style="background:var(--warn-dim)">🔑</div>
+          <div class="setting-info">
+            <div class="setting-name">PINコードを変更</div>
+            <div class="setting-desc">現在の4桁PINを変更できます</div>
+          </div>
+          <span style="color:var(--text3)">›</span>
+        </div>
+      </div>
+
+      <div class="sh"><span class="sh-t">🗄️ データ</span></div>
+      <div class="setting-card">
+        <div class="setting-row" onclick="exportData()">
+          <div class="setting-ic" style="background:var(--primary-dim)">📤</div>
+          <div class="setting-info">
+            <div class="setting-name">データをエクスポート</div>
+            <div class="setting-desc">JSONファイルに保存</div>
+          </div>
+          <span style="color:var(--text3)">›</span>
+        </div>
+        <div class="setting-row" onclick="confirmClear()">
+          <div class="setting-ic" style="background:var(--danger-dim)">🗑️</div>
+          <div class="setting-info">
+            <div class="setting-name">全データを削除</div>
+            <div class="setting-desc">元に戻せません</div>
+          </div>
+          <span style="color:var(--text3)">›</span>
+        </div>
+      </div>
+      <div style="text-align:center;padding:20px;font-size:11px;color:var(--text3);line-height:1.8">送迎車メンテナンス管理 v4.0</div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- TAB BAR: 給油・オイル・整備・ホーム・集計・設定 -->
+  <div class="tab-bar">
+    <div class="tb active" onclick="switchTab('fuel')">
+      <div class="tb-ic">⛽</div>給油
+    </div>
+    <div class="tb" onclick="switchTab('oil')">
+      <div class="tb-ic">🛢️</div>オイル
+    </div>
+    <div class="tb" onclick="switchTab('maint')">
+      <div class="tb-ic">🔧</div>整備
+    </div>
+    <div class="tb" onclick="switchTab('home')">
+      <div class="tb-ic">📊</div>ホーム
+    </div>
+    <div class="tb" onclick="switchTab('hist')">
+      <div class="tb-ic">📈</div>集計
+    </div>
+    <div class="tb" onclick="switchTab('settings')">
+      <div class="tb-ic">⚙️</div>設定
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: 車両設定 ===== -->
+<div class="modal-overlay" id="modal-vehicles">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🚐 車両設定</div>
+    <div id="vehicle-setting-list"></div>
+    <button class="btn btn-p" onclick="saveVehicleSettings()">✅ 保存する</button>
+    <button class="btn btn-g" onclick="closeModal()">閉じる</button>
+  </div>
+</div>
+
+<!-- ===== MODAL: オイルアラート ===== -->
+<div class="modal-overlay" id="modal-oil-alert">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🛢️ オイル交換アラート設定</div>
+    <div class="oil-alert-options">
+      <div class="oil-opt selected" id="opt-km" onclick="selectOilOpt('km')">
+        <div class="oil-opt-ic">📏</div>
+        <div class="oil-opt-info"><div class="oil-opt-name">走行距離で管理</div><div class="oil-opt-desc">例：5,000km毎</div></div>
+        <div class="oil-opt-check" id="check-km">✓</div>
+      </div>
+      <div class="oil-opt" id="opt-month" onclick="selectOilOpt('month')">
+        <div class="oil-opt-ic">📅</div>
+        <div class="oil-opt-info"><div class="oil-opt-name">期間で管理</div><div class="oil-opt-desc">例：3ヶ月毎</div></div>
+        <div class="oil-opt-check" id="check-month"></div>
+      </div>
+      <div class="oil-opt" id="opt-both" onclick="selectOilOpt('both')">
+        <div class="oil-opt-ic">⚡</div>
+        <div class="oil-opt-info"><div class="oil-opt-name">両方で管理（どちらか早い方）</div><div class="oil-opt-desc">より厳密に管理</div></div>
+        <div class="oil-opt-check" id="check-both"></div>
+      </div>
+    </div>
+    <div class="oil-thresh-wrap">
+      <div class="oil-thresh-row" id="thresh-km-row">
+        <div class="oil-thresh-lbl">交換距離</div>
+        <input type="number" class="oil-thresh-input" id="thresh-km" value="5000">
+        <div class="oil-thresh-unit">km毎</div>
+      </div>
+      <div class="oil-thresh-row" id="thresh-km-warn-row">
+        <div class="oil-thresh-lbl">警告（残り）</div>
+        <input type="number" class="oil-thresh-input" id="thresh-km-warn" value="500">
+        <div class="oil-thresh-unit">km前</div>
+      </div>
+      <div class="oil-thresh-row" id="thresh-month-row" style="display:none">
+        <div class="oil-thresh-lbl">交換期間</div>
+        <input type="number" class="oil-thresh-input" id="thresh-month" value="3">
+        <div class="oil-thresh-unit">ヶ月毎</div>
+      </div>
+    </div>
+    <button class="btn btn-p" onclick="saveOilAlertSetting()">✅ 保存する</button>
+    <button class="btn btn-g" onclick="closeModal()">閉じる</button>
+  </div>
+</div>
+
+<!-- ===== MODAL: 担当者 ===== -->
+<div class="modal-overlay" id="modal-staff">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">👤 担当者名設定</div>
+    <div class="fg">
+      <label>あなたの名前</label>
+      <input type="text" class="fi" id="staff-name-input" placeholder="例：田中">
+    </div>
+    <button class="btn btn-p" onclick="saveStaff()">✅ 保存する</button>
+    <button class="btn btn-g" onclick="closeModal()">閉じる</button>
+  </div>
+</div>
+
+
+<!-- ===== MODAL: PIN変更 ===== -->
+<div class="modal-overlay" id="modal-pin">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🔑 PINコードを変更</div>
+    <div class="fg">
+      <label>現在のPIN（4桁）</label>
+      <input type="password" inputmode="numeric" maxlength="4" class="fi" id="pin-current" placeholder="••••">
+    </div>
+    <div class="fg">
+      <label>新しいPIN（4桁）</label>
+      <input type="password" inputmode="numeric" maxlength="4" class="fi" id="pin-new" placeholder="••••">
+    </div>
+    <div class="fg">
+      <label>新しいPIN（確認）</label>
+      <input type="password" inputmode="numeric" maxlength="4" class="fi" id="pin-confirm" placeholder="••••">
+    </div>
+    <button class="btn btn-p" onclick="savePin()">✅ PINを変更する</button>
+    <button class="btn btn-g" onclick="closeModal()">閉じる</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════ DATA ═══════════
+const DEFAULT_VEHICLES = [
+  {id:'v1',name:'さくら1号',plate:'大阪 500 あ 1234',type:'ハイエース',odo:82450,ownerType:'purchase',purchasePrice:2800000,leaseMonthly:0,carTax:43500,weightTax:32800,jibaiseki:27840},
+  {id:'v2',name:'さくら2号',plate:'大阪 500 い 5678',type:'ハイエース',odo:61200,ownerType:'lease',purchasePrice:0,leaseMonthly:45000,carTax:0,weightTax:0,jibaiseki:0},
+  {id:'v3',name:'さくら3号',plate:'大阪 500 う 9012',type:'キャラバン',odo:95800,ownerType:'purchase',purchasePrice:2500000,leaseMonthly:0,carTax:43500,weightTax:32800,jibaiseki:27840},
+  {id:'v4',name:'さくら4号',plate:'大阪 500 え 3456',type:'ハイエース',odo:42100,ownerType:'lease',purchasePrice:0,leaseMonthly:48000,carTax:0,weightTax:0,jibaiseki:0},
+  {id:'v5',name:'さくら5号',plate:'大阪 500 お 7890',type:'キャラバン',odo:28600,ownerType:'purchase',purchasePrice:2200000,leaseMonthly:0,carTax:43500,weightTax:32800,jibaiseki:27840},
+];
+
+function load(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+let vehicles   = load('vehicles_v4', DEFAULT_VEHICLES);
+let fuelRecs   = load('fuel_recs', []);
+let oilRecs    = load('oil_recs', []);
+let maintRecs  = load('maint_recs', []);
+let oilSetting = load('oil_setting', {mode:'km',threshKm:5000,warnKm:500,threshMonth:3});
+let staffName  = localStorage.getItem('staff_name') || '';
+
+// ═══════════ MAINT TYPES ═══════════
+const MAINT_TYPES_BASE = ['タイヤ交換','修理（故障）','バッテリー交換','ブレーキパッド交換','6ヶ月点検','法定12ヶ月点検','その他'];
+const MAINT_TYPE_SHAKKEN = '車検';
+
+function getMaintTypes(vid) {
+  const v = vehicles.find(v=>v.id===vid);
+  const isPurchase = !v || v.ownerType === 'purchase';
+  return isPurchase ? [MAINT_TYPE_SHAKKEN, ...MAINT_TYPES_BASE] : MAINT_TYPES_BASE;
+}
+
+function updateMaintTypes() {
+  const vid = document.getElementById('m-vehicle')?.value;
+  const sel = document.getElementById('m-type');
+  if (!sel) return;
+  const types = getMaintTypes(vid);
+  sel.innerHTML = types.map(t => `<option>${t}</option>`).join('');
+}
+
+// ═══════════ NAV ═══════════
+function switchTab(tab) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tb').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+tab).classList.add('active');
+  const tabs=['fuel','oil','maint','home','hist','settings'];
+  const idx=tabs.indexOf(tab);
+  if(idx>=0) document.querySelectorAll('.tb')[idx].classList.add('active');
+  if(tab==='home')     renderHome();
+  if(tab==='fuel')     renderFuelHist();
+  if(tab==='oil')      renderOilPage();
+  if(tab==='maint')    renderMaintPage();
+  if(tab==='hist')     renderHistPage();
+  if(tab==='settings') renderSettings();
+}
+
+function populateSelects() {
+  ['f-vehicle','o-vehicle','m-vehicle'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.innerHTML=vehicles.map(v=>`<option value="${v.id}">${v.name}</option>`).join('');
+  });
+  updateMaintTypes();
+  document.getElementById('m-vehicle')?.addEventListener('change', updateMaintTypes);
+  document.getElementById('hdr-sub').textContent = `${vehicles.length}台管理中`;
+}
+
+// ═══════════ FUEL CALC ═══════════
+function calcFuel() {
+  const vid   = document.getElementById('f-vehicle').value;
+  const odo   = parseFloat(document.getElementById('f-odo').value);
+  const liter = parseFloat(document.getElementById('f-liter').value);
+  const amount= parseFloat(document.getElementById('f-amount').value);
+  const box   = document.getElementById('fuel-calc');
+  if(!liter||liter<=0){box.classList.remove('show');return;}
+  const prev = fuelRecs.filter(r=>r.vid===vid).sort((a,b)=>b.date>a.date?1:-1)[0];
+  let kmplTxt = '前回記録なし';
+  if(prev&&odo&&parseFloat(prev.odo)>0){
+    const dist=odo-parseFloat(prev.odo);
+    if(dist>0) kmplTxt=(dist/liter).toFixed(1);
+  }
+  document.getElementById('fuel-kmpl').textContent=kmplTxt;
+  document.getElementById('fuel-unit').textContent=amount?`¥${(amount/liter).toFixed(1)}`:'—';
+  box.classList.add('show');
+}
+
+// ═══════════ SAVE FUEL ═══════════
+function saveFuel(){
+  const vid   =document.getElementById('f-vehicle').value;
+  const date  =document.getElementById('f-date').value;
+  const odo   =document.getElementById('f-odo').value;
+  const liter =document.getElementById('f-liter').value;
+  const amount=document.getElementById('f-amount').value;
+  const stand =document.getElementById('f-stand').value;
+  if(!date||!liter){showToast('⚠️ 日付と給油量は必須です',true);return;}
+  const prev=fuelRecs.filter(r=>r.vid===vid).sort((a,b)=>b.date>a.date?1:-1)[0];
+  let kmpl=null;
+  if(prev&&odo&&parseFloat(prev.odo)>0){
+    const dist=parseFloat(odo)-parseFloat(prev.odo);
+    if(dist>0) kmpl=(dist/parseFloat(liter)).toFixed(1);
+  }
+  fuelRecs.unshift({id:Date.now(),vid,date,odo,liter,amount,stand,kmpl,staff:staffName});
+  save('fuel_recs',fuelRecs);
+  if(odo){const v=vehicles.find(v=>v.id===vid);if(v){v.odo=parseInt(odo);save('vehicles_v4',vehicles);}}
+  showToast('⛽ 給油記録を保存しました！');
+  ['f-odo','f-liter','f-amount','f-stand'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fuel-calc').classList.remove('show');
+  renderFuelHist();
+}
+
+function renderFuelHist(){
+  const el=document.getElementById('fuel-hist');
+  if(!fuelRecs.length){el.innerHTML='<div class="empty"><span class="empty-ic">⛽</span>給油記録がありません</div>';return;}
+  el.innerHTML=fuelRecs.slice(0,30).map(r=>{
+    const vname=vehicles.find(v=>v.id===r.vid)?.name||r.vid;
+    const kmpl=r.kmpl?`燃費: ${r.kmpl}km/L`:'燃費: 計算中';
+    return`<div class="hist-item">
+      <div class="hist-ic">⛽</div>
+      <div class="hist-info"><div class="hist-main">${vname}</div>
+      <div class="hist-sub">${r.liter}L ／ ${r.stand||'—'} ／ ${kmpl}${r.staff?' ／ '+r.staff:''}</div></div>
+      <div class="hist-right"><div class="hist-cost">${r.amount?'¥'+parseInt(r.amount).toLocaleString():'—'}</div><div class="hist-date">${r.date}</div></div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════ HOME ═══════════
+function renderHome(){
+  const now=new Date();
+  const ms=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  const mf=r=>r.date?.startsWith(ms);
+  const sum=(arr,key)=>arr.filter(mf).reduce((a,r)=>a+(parseInt(r[key])||0),0);
+  const fCost=sum(fuelRecs,'amount');
+  const oCost=sum(oilRecs,'cost');
+  const mCost=sum(maintRecs,'cost');
+  // lease cost this month
+  const leaseCost=vehicles.filter(v=>v.ownerType==='lease').reduce((a,v)=>a+(parseInt(v.leaseMonthly)||0),0);
+  const total=fCost+oCost+mCost+leaseCost;
+
+  const ym=`${now.getFullYear()}年${now.getMonth()+1}月`;
+  document.getElementById('total-cost').innerHTML=`¥${total.toLocaleString()}<span>${ym}</span>`;
+
+  // 車検費（購入車のみ・maintRecsから今月分）
+  const shakkenCost = maintRecs.filter(r => mf(r) && r.type === '車検').reduce((a,r) => a+(parseInt(r.cost)||0), 0);
+  // 購入費（購入車の購入価格合計・参考表示）
+  const purchaseTotal = vehicles.filter(v=>v.ownerType==='purchase').reduce((a,v)=>a+(parseInt(v.purchasePrice)||0),0);
+
+  const lines=[];
+  lines.push({lbl:'⛽ ガソリン代',    val:fCost,    always:true});
+  lines.push({lbl:'🛢️ オイル交換費',  val:oCost,    always:true});
+  lines.push({lbl:'🔧 整備・修理費',  val:mCost,    always:true});
+  if(leaseCost>0)    lines.push({lbl:'📋 リース月額',val:leaseCost});
+  if(shakkenCost>0)  lines.push({lbl:'🔍 車検費用',  val:shakkenCost,note:'購入車のみ'});
+
+  document.getElementById('cost-breakdown').innerHTML=lines.map(l=>`
+    <div class="ch-bk-item">
+      <span class="ch-bk-lbl">${l.lbl}${l.note?`<span style="font-size:9px;color:var(--text3);margin-left:4px">(${l.note})</span>`:''}</span>
+      <span class="ch-bk-val">¥${l.val.toLocaleString()}</span>
+    </div>`).join('') +
+    (purchaseTotal > 0 ? `
+    <div class="ch-bk-item" style="border-top:1px dashed var(--border);margin-top:4px;padding-top:4px">
+      <span class="ch-bk-lbl">🔑 購入価格合計<span style="font-size:9px;color:var(--text3);margin-left:4px">(参考)</span></span>
+      <span class="ch-bk-val" style="color:var(--text2)">¥${purchaseTotal.toLocaleString()}</span>
+    </div>` : '');
+
+  renderOilStatus();
+
+  // recent
+  const all=[
+    ...fuelRecs.map(r=>({...r,_t:'fuel'})),
+    ...oilRecs.map(r=>({...r,_t:'oil'})),
+    ...maintRecs.map(r=>({...r,_t:'maint'})),
+  ].sort((a,b)=>b.date>a.date?1:-1).slice(0,5);
+  const re=document.getElementById('recent-hist');
+  re.innerHTML=all.length?all.map(r=>histItemHTML(r)).join(''):'<div class="empty"><span class="empty-ic">📋</span>まだ記録がありません</div>';
+
+  // alert
+  const ov=getOilOverdue();
+  const ae=document.getElementById('alert-area');
+  if(ov.length){ae.style.display='flex';document.getElementById('alert-text').textContent=ov.map(v=>`${v.name}：${v.msg}`).join(' ／ ');}
+  else ae.style.display='none';
+}
+
+function getOilOverdue(){
+  return vehicles.filter(v=>{const s=calcOilStatus(v);return s.level==='ov'||s.level==='soon';})
+    .map(v=>{const s=calcOilStatus(v);return{name:v.name,msg:s.level==='ov'?`オイル交換超過（${s.remText}）`:`オイル交換まもなく（${s.remText}）`};});
+}
+
+function renderOilStatus(){
+  document.getElementById('oil-status-list').innerHTML=vehicles.map(v=>{
+    const st=calcOilStatus(v);
+    const last=getLastOil(v.id);
+    const detail=last?`前回：${last.date} ／ ${parseInt(last.odo||0).toLocaleString()}km時`:'交換記録なし';
+    return`<div class="oil-card ${st.level}">
+      <div class="oil-ic ${st.level}">🛢️</div>
+      <div class="oil-info"><div class="oil-car">${v.name}</div><div class="oil-detail">${detail}</div></div>
+      <div class="oil-right"><div class="oil-rem ${st.level}">${st.remText}</div><div class="oil-nxt">${st.nxtText}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function getLastOil(vid){return oilRecs.filter(r=>r.vid===vid).sort((a,b)=>b.date>a.date?1:-1)[0]||null;}
+
+function calcOilStatus(v){
+  const s=oilSetting;const last=getLastOil(v.id);
+  if(s.mode==='km'||s.mode==='both'){
+    const lastOdo=last?parseInt(last.odo):(v.odo-s.threshKm);
+    const nextOdo=lastOdo+s.threshKm;
+    const rem=nextOdo-v.odo;
+    if(rem<=0)return{level:'ov',remText:`超過 +${Math.abs(rem).toLocaleString()}km`,nxtText:'即交換が必要'};
+    if(rem<=s.warnKm)return{level:'soon',remText:`残り ${rem.toLocaleString()}km`,nxtText:`次回 ${nextOdo.toLocaleString()}km`};
+    return{level:'ok',remText:`残り ${rem.toLocaleString()}km`,nxtText:`次回 ${nextOdo.toLocaleString()}km`};
+  }
+  if(s.mode==='month'){
+    const ld=last?new Date(last.date):new Date(Date.now()-s.threshMonth*30*86400000);
+    const nd=new Date(ld);nd.setMonth(nd.getMonth()+s.threshMonth);
+    const diff=Math.round((nd-new Date())/86400000);
+    if(diff<=0)return{level:'ov',remText:`${Math.abs(diff)}日超過`,nxtText:'即交換が必要'};
+    if(diff<=14)return{level:'soon',remText:`残り ${diff}日`,nxtText:nd.toLocaleDateString('ja-JP')};
+    return{level:'ok',remText:`残り ${diff}日`,nxtText:nd.toLocaleDateString('ja-JP')};
+  }
+  return{level:'ok',remText:'—',nxtText:'—'};
+}
+
+// ═══════════ OIL ═══════════
+function autoNextOdo(){
+  const odo=parseInt(document.getElementById('o-odo').value);
+  if(!odo)return;
+  document.getElementById('o-next-odo').value=odo+oilSetting.threshKm;
+  document.getElementById('o-odo-hint').textContent=`${odo.toLocaleString()} + ${oilSetting.threshKm.toLocaleString()}km`;
+}
+
+function renderOilPage(){
+  const ov=vehicles.filter(v=>calcOilStatus(v).level==='ov');
+  const wb=document.getElementById('oil-warn-banner');
+  if(ov.length){wb.style.display='flex';document.getElementById('oil-warn-text').textContent=ov.map(v=>`${v.name}のオイル交換が超過しています！`).join(' ');}
+  else wb.style.display='none';
+  renderOilHist();
+}
+
+function saveOil(){
+  const vid=document.getElementById('o-vehicle').value;
+  const date=document.getElementById('o-date').value;
+  const odo=document.getElementById('o-odo').value;
+  if(!date||!odo){showToast('⚠️ 日付と走行距離は必須です',true);return;}
+  oilRecs.unshift({id:Date.now(),vid,date,odo,
+    nextOdo:document.getElementById('o-next-odo').value,
+    nextDate:document.getElementById('o-next-date').value,
+    cost:document.getElementById('o-cost').value,
+    shop:document.getElementById('o-shop').value,
+    note:document.getElementById('o-note').value,
+    staff:staffName});
+  save('oil_recs',oilRecs);
+  if(odo){const v=vehicles.find(v=>v.id===vid);if(v){v.odo=parseInt(odo);save('vehicles_v4',vehicles);}}
+  showToast('🛢️ オイル交換を記録しました！');
+  ['o-odo','o-next-odo','o-cost','o-shop','o-note','o-next-date'].forEach(id=>document.getElementById(id).value='');
+  renderOilHist();renderHome();
+}
+
+function renderOilHist(){
+  const el=document.getElementById('oil-hist');
+  if(!oilRecs.length){el.innerHTML='<div class="empty"><span class="empty-ic">🛢️</span>オイル交換記録がありません</div>';return;}
+  el.innerHTML=oilRecs.slice(0,20).map(r=>{
+    const vname=vehicles.find(v=>v.id===r.vid)?.name||r.vid;
+    return`<div class="hist-item"><div class="hist-ic">🛢️</div>
+      <div class="hist-info"><div class="hist-main">${vname}</div>
+      <div class="hist-sub">${parseInt(r.odo||0).toLocaleString()}km ／ ${r.shop||'—'}${r.note?' ／ '+r.note:''}${r.staff?' ／ '+r.staff:''}</div></div>
+      <div class="hist-right"><div class="hist-cost">${r.cost?'¥'+parseInt(r.cost).toLocaleString():'—'}</div><div class="hist-date">${r.date}</div></div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════ MAINT ═══════════
+function renderMaintPage(){ updateMaintTypes(); renderMaintHist(); }
+
+function saveMaint(){
+  const vid=document.getElementById('m-vehicle').value;
+  const date=document.getElementById('m-date').value;
+  if(!date){showToast('⚠️ 日付は必須です',true);return;}
+  maintRecs.unshift({id:Date.now(),vid,date,
+    type:document.getElementById('m-type').value,
+    content:document.getElementById('m-content').value,
+    cost:document.getElementById('m-cost').value,
+    shop:document.getElementById('m-shop').value,
+    staff:staffName});
+  save('maint_recs',maintRecs);
+  showToast('🔧 整備記録を保存しました！');
+  ['m-content','m-cost','m-shop'].forEach(id=>document.getElementById(id).value='');
+  renderMaintHist();
+}
+
+function renderMaintHist(){
+  const el=document.getElementById('maint-hist');
+  if(!maintRecs.length){el.innerHTML='<div class="empty"><span class="empty-ic">🔧</span>整備記録がありません</div>';return;}
+  el.innerHTML=maintRecs.slice(0,20).map(r=>{
+    const vname=vehicles.find(v=>v.id===r.vid)?.name||r.vid;
+    const ic={タイヤ:'🔄',車検:'🔍',修理:'🛠️',バッテリー:'🔋',ブレーキ:'🛞'}; 
+    const em=Object.keys(ic).find(k=>r.type?.includes(k))?ic[Object.keys(ic).find(k=>r.type?.includes(k))]:'🔧';
+    return`<div class="hist-item"><div class="hist-ic">${em}</div>
+      <div class="hist-info"><div class="hist-main">${vname}　${r.type}</div>
+      <div class="hist-sub">${r.content||'—'} ／ ${r.shop||'—'}${r.staff?' ／ '+r.staff:''}</div></div>
+      <div class="hist-right"><div class="hist-cost">${r.cost?'¥'+parseInt(r.cost).toLocaleString():'—'}</div><div class="hist-date">${r.date}</div></div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════ HIST PAGE ═══════════
+// ═══ PERIOD ═══
+let currentPeriod='month';
+function setPeriod(p){
+  currentPeriod=p;
+  ['month','year','all'].forEach(x=>document.getElementById('ptab-'+x).classList.toggle('active',x===p));
+  renderHistPage();
+}
+function getPeriodFilter(){
+  const now=new Date();
+  if(currentPeriod==='month'){const ms=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');return r=>r.date?.startsWith(ms);}
+  if(currentPeriod==='year'){const ys=String(now.getFullYear());return r=>r.date?.startsWith(ys);}
+  return ()=>true;
+}
+function getPeriodLabel(){
+  const now=new Date();
+  if(currentPeriod==='month')return now.getFullYear()+'年'+( now.getMonth()+1)+'月';
+  if(currentPeriod==='year')return now.getFullYear()+'年度';
+  return '累計';
+}
+
+// ═══ 車両コスト集計 ═══
+function calcVC(v,pf){
+  const fuel=fuelRecs.filter(r=>r.vid===v.id&&pf(r)).reduce((a,r)=>a+(parseInt(r.amount)||0),0);
+  const oil =oilRecs.filter(r=>r.vid===v.id&&pf(r)).reduce((a,r)=>a+(parseInt(r.cost)||0),0);
+  const repair=maintRecs.filter(r=>r.vid===v.id&&pf(r)&&r.type!=='車検').reduce((a,r)=>a+(parseInt(r.cost)||0),0);
+  const shaken=v.ownerType==='purchase'?maintRecs.filter(r=>r.vid===v.id&&pf(r)&&r.type==='車検').reduce((a,r)=>a+(parseInt(r.cost)||0),0):0;
+  const now=new Date();
+  let lease=0;
+  if(v.ownerType==='lease'){
+    const ml=parseInt(v.leaseMonthly)||0;
+    lease=currentPeriod==='month'?ml:ml*12;
+  }
+  const taxY=parseInt(v.carTax)||0,insY=parseInt(v.insurance)||0;
+  const tax=currentPeriod==='month'?Math.round(taxY/12):taxY;
+  const ins=currentPeriod==='month'?Math.round(insY/12):insY;
+  return{fuel,oil,repair,shaken,lease,tax,ins,total:fuel+oil+repair+shaken+lease+tax+ins};
+}
+
+function renderHistPage(){
+  const pf=getPeriodFilter();
+  const lbl=getPeriodLabel();
+
+  // グランドトータル
+  let gf=0,go=0,gr=0,gs=0,gl=0,gt=0,gi=0;
+  vehicles.forEach(v=>{const c=calcVC(v,pf);gf+=c.fuel;go+=c.oil;gr+=c.repair;gs+=c.shaken;gl+=c.lease;gt+=c.tax;gi+=c.ins;});
+  const gTotal=gf+go+gr+gs+gl+gt+gi;
+  document.getElementById('gh-lbl').textContent=lbl+' 全車トータルコスト';
+  document.getElementById('gh-total').textContent='¥'+gTotal.toLocaleString();
+  const bkDefs=[
+    {l:'⛽ ガソリン代',v:gf},{l:'🛢️ オイル交換',v:go},{l:'🔧 整備・修理',v:gr},
+  ];
+  if(gs)bkDefs.push({l:'🔍 車検費',v:gs});
+  if(gl)bkDefs.push({l:'📋 リース月額',v:gl});
+  if(gt)bkDefs.push({l:'🏛️ 税金（自動車税・重量税・自賠責）',v:gt});
+  if(gi)bkDefs.push({l:'🛡️ 保険料',v:gi});
+  bkDefs.push({l:'合計',v:gTotal,tot:true});
+  document.getElementById('gh-bk').innerHTML=bkDefs.map(r=>`
+    <div class="gh-row${r.tot?' is-total':''}">
+      <span>${r.l}</span><span>¥${r.v.toLocaleString()}</span>
+    </div>`).join('');
+
+  // 月別バーチャート
+  const now=new Date();const yr=now.getFullYear();const curM=now.getMonth();
+  const MOS=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  const mCosts=MOS.map((_,mi)=>{
+    const ms=yr+'-'+String(mi+1).padStart(2,'0');
+    const mf2=r=>r.date?.startsWith(ms);
+    return vehicles.reduce((s,v)=>{const c=calcVC(v,mf2);return s+c.fuel+c.oil+c.repair+c.shaken;},0);
+  });
+  const maxC=Math.max(...mCosts,1);
+  document.getElementById('month-bars').innerHTML=mCosts.map((c,i)=>{
+    const h=Math.max(Math.round(c/maxC*65),3);
+    const isCur=i===curM;
+    return`<div class="bar-col">
+      <div class="bar-fill ${isCur?'cur':'past'}" style="height:${h}px" title="¥${c.toLocaleString()}"></div>
+    </div>`;
+  }).join('');
+  document.getElementById('month-lbls').innerHTML=MOS.map((m,i)=>`
+    <div style="flex:1;text-align:center;font-size:8px;color:${i===curM?'var(--accent)':'var(--text3)'};font-weight:${i===curM?700:400}">${m}</div>`).join('');
+
+  // 車両別コスト
+  const vcData=vehicles.map(v=>({v,c:calcVC(v,pf)}));
+  const maxVT=Math.max(...vcData.map(x=>x.c.total),1);
+  document.getElementById('vc-list').innerHTML=vcData.map(({v,c})=>{
+    const share=gTotal?Math.round(c.total/gTotal*100):0;
+    const barW=Math.round(c.total/maxVT*100);
+    const badge=v.ownerType==='lease'?'<span class="badge bg-p">リース</span>':'<span class="badge bg-b">購入</span>';
+    const bkItems=[];
+    if(c.fuel)bkItems.push({l:'⛽ ガソリン',v:c.fuel});
+    if(c.oil) bkItems.push({l:'🛢️ オイル',v:c.oil});
+    if(c.repair)bkItems.push({l:'🔧 整備',v:c.repair});
+    if(c.shaken)bkItems.push({l:'🔍 車検',v:c.shaken});
+    if(c.lease) bkItems.push({l:'📋 リース',v:c.lease});
+    if(c.tax)   bkItems.push({l:'🏛️ 税',v:c.tax});
+    if(c.ins)   bkItems.push({l:'🛡️ 保険',v:c.ins});
+    return`<div class="vc-card">
+      <div class="vc-top">
+        <span style="font-size:22px">🚐</span>
+        <div><div class="vc-name">${v.name} ${badge}</div><div class="vc-sub">${v.plate} ／ ${v.odo.toLocaleString()}km</div></div>
+        <div class="vc-amt"><div class="vc-amt-val">¥${c.total.toLocaleString()}</div><div class="vc-amt-lbl">${lbl}</div></div>
+      </div>
+      ${bkItems.length?`<div class="vc-breakdown">${bkItems.map(b=>`<div class="vc-bk"><span>${b.l}</span><span>¥${b.v.toLocaleString()}</span></div>`).join('')}</div>`:''}
+      <div class="share-bar-wrap"><div class="share-bar-fill" style="width:${barW}%"></div></div>
+      <div class="share-txt">全車中 ${share}% を占める</div>
+    </div>`;
+  }).join('');
+
+  // 燃費サマリー
+  document.getElementById('fuel-summary').innerHTML=vehicles.map(v=>{
+    const vr=fuelRecs.filter(r=>r.vid===v.id);
+    const last=vr.find(r=>r.kmpl)?.kmpl;
+    const prev=vr.filter(r=>r.kmpl)[1]?.kmpl;
+    const tot=vr.reduce((a,r)=>a+(parseInt(r.amount)||0),0);
+    const cls=!last?'':(!prev?'neu':parseFloat(last)>=parseFloat(prev)?'good':'bad');
+    const badge=v.ownerType==='lease'?'<span class="badge bg-p">リース</span>':'<span class="badge bg-b">購入</span>';
+    return`<div class="fuel-card">
+      <div class="fuel-top">
+        <span style="font-size:22px">🚐</span>
+        <div><div class="fuel-name">${v.name} ${badge}</div><div class="fuel-plate">${v.plate}</div></div>
+        <div style="margin-left:auto">${last?`<span class="badge ${parseFloat(last)>=9?'bg-g':'bg-o'}">${last}km/L</span>`:'<span class="badge bg-gr">記録なし</span>'}</div>
+      </div>
+      <div class="fuel-stats">
+        <div class="fuel-stat"><div class="fuel-stat-val ${cls}">${last||'—'}</div><div class="fuel-stat-lbl">直近燃費</div></div>
+        <div class="fuel-stat"><div class="fuel-stat-val">${prev||'—'}</div><div class="fuel-stat-lbl">前回燃費</div></div>
+        <div class="fuel-stat"><div class="fuel-stat-val neu">¥${tot.toLocaleString()}</div><div class="fuel-stat-lbl">累計燃料費</div></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // 購入 vs リース 実績比較
+  renderPvL();
+  runSim();
+}
+
+// ═══ 購入 vs リース 実績比較 ═══
+function realAnnual(vArr){
+  // 全記録から月平均コストを算出して年換算
+  if(!vArr.length)return 0;
+  const perVehicle=vArr.map(v=>{
+    const allRecs=[
+      ...fuelRecs.filter(r=>r.vid===v.id).map(r=>({date:r.date,cost:parseInt(r.amount)||0})),
+      ...oilRecs.filter(r=>r.vid===v.id).map(r=>({date:r.date,cost:parseInt(r.cost)||0})),
+      ...maintRecs.filter(r=>r.vid===v.id).map(r=>({date:r.date,cost:parseInt(r.cost)||0})),
+    ].filter(r=>r.date);
+    if(!allRecs.length)return 0;
+    const dates=allRecs.map(r=>r.date).sort();
+    const months=Math.max(((new Date(dates[dates.length-1])-new Date(dates[0]))/86400000/30),1);
+    const total=allRecs.reduce((a,r)=>a+r.cost,0);
+    return total/months*12;
+  });
+  return perVehicle.reduce((a,v)=>a+v,0)/vArr.length;
+}
+
+function renderPvL(){
+  const pV=vehicles.filter(v=>v.ownerType==='purchase');
+  const lV=vehicles.filter(v=>v.ownerType==='lease');
+  const verdictEl=document.getElementById('pvl-verdict-area');
+  const colsEl=document.getElementById('pvl-cols');
+
+  if(!pV.length&&!lV.length){
+    verdictEl.innerHTML='<div class="empty"><span class="empty-ic">⚖️</span>設定から車両の購入/リースを設定してください</div>';
+    colsEl.innerHTML='';return;
+  }
+
+  const pMaintAnnual=realAnnual(pV);   // 購入車の実績年間メンテ費（1台平均）
+  const lMaintAnnual=realAnnual(lV);   // リース車の実績年間メンテ費（1台平均）
+  const lMonthAvg=lV.reduce((a,v)=>a+(parseInt(v.leaseMonthly)||0),0)/Math.max(lV.length,1);
+  const lTotalAnnual=lMonthAvg*12+lMaintAnnual;  // リース：月額＋運用
+  const pTotalAnnual=pMaintAnnual;               // 購入：メンテのみ（初期費用別）
+
+  // シミュレーター初期値を実績で自動セット
+  if(pV.length){
+    const pp=pV.reduce((a,v)=>a+(parseInt(v.purchasePrice)||0),0)/pV.length;
+    document.getElementById('sim-price').value=Math.round(pp)||2800000;
+    document.getElementById('sim-maint').value=Math.round(pMaintAnnual)||150000;
+  }
+  if(lV.length){
+    document.getElementById('sim-lease').value=Math.round(lMonthAvg)||45000;
+  }
+
+  if(pV.length&&lV.length){
+    // diff は pvl-cols の後で再計算するため、ここでは暫定値
+    const diff_temp = (lMaintAnnual+lMonthAvg*12) - pMaintAnnual;
+    const isLeaseCheaper=diff_temp>0;
+    verdictEl.innerHTML=`<div class="pvl-verdict ${isLeaseCheaper?'purchase':'lease'}">
+      <div class="pvl-v-ic">${isLeaseCheaper?'🔑':'📋'}</div>
+      <div>
+        <div class="pvl-v-ttl">${isLeaseCheaper?'購入車の方が':'リースの方が'}年間 ¥${Math.abs(Math.round(diff)).toLocaleString()} お得</div>
+        <div class="pvl-v-sub">実績記録ベースの比較です（初期費用除く）。<br>購入は初期費用の回収期間も含めてシミュレーターで確認を。</div>
+      </div>
+    </div>`;
+    // 購入車の税金年換算（平均）
+    const pTaxAvg = pV.reduce((a,v)=>{
+      const carTaxY=parseInt(v.carTax)||0;
+      const biAnnual=(parseInt(v.weightTax)||0)+(parseInt(v.jibaiseki)||0);
+      return a+carTaxY+Math.round(biAnnual/2);
+    },0)/pV.length;
+    const pGrandAnnual = pMaintAnnual + pTaxAvg;
+    lTotalAnnual = lMaintAnnual + lMonthAvg*12;
+
+    colsEl.innerHTML=`
+      <div class="pvl-col purchase">
+        <div class="pvl-col-h">🔑 購入（${pV.length}台平均）</div>
+        <div class="pvl-col-r"><span>年間メンテ実績</span><span>¥${Math.round(pMaintAnnual).toLocaleString()}</span></div>
+        <div class="pvl-col-r"><span>自動車税（年額）</span><span>¥${Math.round(pV.reduce((a,v)=>a+(parseInt(v.carTax)||0),0)/pV.length).toLocaleString()}</span></div>
+        <div class="pvl-col-r"><span>重量税＋自賠責（年換算）</span><span>¥${Math.round(pV.reduce((a,v)=>a+Math.round(((parseInt(v.weightTax)||0)+(parseInt(v.jibaiseki)||0))/2),0)/pV.length).toLocaleString()}</span></div>
+        <div class="pvl-col-r"><span>年間合計</span><span>¥${Math.round(pGrandAnnual).toLocaleString()}</span></div>
+      </div>
+      <div class="pvl-col lease">
+        <div class="pvl-col-h">📋 リース（${lV.length}台平均）</div>
+        <div class="pvl-col-r"><span>月額平均</span><span>¥${Math.round(lMonthAvg).toLocaleString()}</span></div>
+        <div class="pvl-col-r"><span>年間リース料</span><span>¥${Math.round(lMonthAvg*12).toLocaleString()}</span></div>
+        <div class="pvl-col-r"><span>年間メンテ実績</span><span>¥${Math.round(lMaintAnnual).toLocaleString()}</span></div>
+        <div class="pvl-col-r"><span>税・車検・保険</span><span>込み（リース料内）</span></div>
+        <div class="pvl-col-r"><span>年間合計</span><span>¥${Math.round(lTotalAnnual).toLocaleString()}</span></div>
+      </div>`;
+  } else {
+    verdictEl.innerHTML=`<div class="pvl-verdict neutral">
+      <div class="pvl-v-ic">📊</div>
+      <div><div class="pvl-v-ttl">購入・リース両方設定で比較できます</div>
+      <div class="pvl-v-sub">設定 → 車両設定 で各車両の購入/リースを設定してください。</div></div>
+    </div>`;
+    colsEl.innerHTML='';
+  }
+}
+
+// ═══ 損益分岐シミュレーター ═══
+function runSim(){
+  const price    =parseFloat(document.getElementById('sim-price')?.value)||2800000;
+  const lease    =parseFloat(document.getElementById('sim-lease')?.value)||45000;
+  const maint    =parseFloat(document.getElementById('sim-maint')?.value)||150000;
+  const cartax   =parseFloat(document.getElementById('sim-cartax')?.value)||43500;
+  const weighttax=parseFloat(document.getElementById('sim-weighttax')?.value)||32800;
+  const jibaiseki=parseFloat(document.getElementById('sim-jibaiseki')?.value)||27840;
+  const shaken   =parseFloat(document.getElementById('sim-shaken')?.value)||60000;
+
+  // 購入：年間コスト＝メンテ＋自動車税＋重量税(年割)＋自賠責(年割)＋車検工賃(年割)
+  const pAnnual = maint + cartax + (weighttax+jibaiseki+shaken)/2;
+  const lAnnual = lease*12;  // リース：月額×12（税保険込み前提）
+
+  const beEl=document.getElementById('be-val');
+  const blEl=document.getElementById('be-lbl');
+  const chartEl=document.getElementById('be-chart');
+  if(!beEl)return;
+
+  const annualSaving=lAnnual-pAnnual;  // リース - 購入の年間差（＋なら購入が安い）
+
+  // 10年のバーチャート
+  const YEARS=10;
+  const pCumul=Array.from({length:YEARS},(_,i)=>price+pAnnual*(i+1));
+  const lCumul=Array.from({length:YEARS},(_,i)=>lAnnual*(i+1));
+  const maxV=Math.max(...pCumul,...lCumul,1);
+  chartEl.innerHTML=Array.from({length:YEARS},(_,i)=>{
+    const ph=Math.round(pCumul[i]/maxV*55);
+    const lh=Math.round(lCumul[i]/maxV*55);
+    return`<div style="flex:1;display:flex;gap:1px;align-items:flex-end;height:60px">
+      <div class="be-bar" style="flex:1;height:${ph}px;background:var(--primary-dim);border:1px solid rgba(79,172,255,.4)"></div>
+      <div class="be-bar" style="flex:1;height:${lh}px;background:var(--purple-dim);border:1px solid rgba(180,127,255,.4)"></div>
+    </div>`;
+  }).join('')+`<div style="font-size:8px;color:var(--text3);margin:4px 0 -4px;width:100%;display:flex;justify-content:space-between"><span>🔑購入</span><span>📋リース</span></div>`;
+
+  if(annualSaving<=0){
+    beEl.textContent='購入は常にリースより高コスト';
+    blEl.textContent=`年間差：購入が ¥${Math.abs(Math.round(annualSaving)).toLocaleString()} 割高（初期費用除く）`;
+    beEl.style.color='var(--danger)';beEl.style.fontSize='14px';
+  } else {
+    const years=price/annualSaving;
+    beEl.textContent=years.toFixed(1)+'年';
+    beEl.style.color='var(--accent)';beEl.style.fontSize='22px';
+    blEl.innerHTML=`${years.toFixed(1)}年以上使えば購入がお得<br>（年間差額 ¥${Math.round(annualSaving).toLocaleString()} ／ 10年で ¥${Math.round(annualSaving*10).toLocaleString()}）`;
+  }
+}
+
+// ═══════════ SETTINGS ═══════════
+function renderSettings(){
+  const s=oilSetting;
+  const txt=s.mode==='km'?`走行距離（${s.threshKm.toLocaleString()}km毎）`:s.mode==='month'?`期間（${s.threshMonth}ヶ月毎）`:`両方（${s.threshKm.toLocaleString()}km ／ ${s.threshMonth}ヶ月）`;
+  document.getElementById('oil-alert-desc').textContent=txt;
+  document.getElementById('staff-desc').textContent=staffName||'未設定';
+}
+
+// ═══════════ VEHICLE SETTING MODAL ═══════════
+function openVehicleModal(){
+  document.getElementById('vehicle-setting-list').innerHTML=vehicles.map(v=>`
+    <div class="vsi" style="margin-bottom:12px">
+      <div class="vsi-top">
+        <span style="font-size:20px">🚐</span>
+        <div><div class="vsi-name">${v.name}</div><div class="vsi-plate-badge">${v.plate}</div></div>
+      </div>
+      <div style="margin-bottom:10px">
+        <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px">購入 / リース</div>
+        <div class="type-toggle">
+          <button class="type-btn ${v.ownerType==='purchase'?'active-purchase':''}" onclick="setOwnerType('${v.id}','purchase',this)">🔑 購入</button>
+          <button class="type-btn ${v.ownerType==='lease'?'active-lease':''}" onclick="setOwnerType('${v.id}','lease',this)">📋 リース</button>
+        </div>
+      </div>
+      <div id="vsi-purchase-${v.id}" style="${v.ownerType==='purchase'?'':'display:none'}">
+        <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">購入価格 (円)</div>
+        <input type="number" class="fi" id="vsi-purchase-${v.id}-price" value="${v.purchasePrice||''}" placeholder="2800000" style="margin-bottom:12px">
+      </div>
+      <div id="vsi-lease-${v.id}" style="${v.ownerType==='lease'?'':'display:none'}">
+        <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">月額料金 (円)</div>
+        <input type="number" class="fi" id="vsi-lease-${v.id}-monthly" value="${v.leaseMonthly||''}" placeholder="45000" style="margin-bottom:12px">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">現在の走行距離</div>
+          <input type="number" class="fi" id="vsi-odo-${v.id}" value="${v.odo}" placeholder="0">
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">ナンバー</div>
+          <input type="text" class="fi" id="vsi-plate-${v.id}" value="${v.plate}">
+        </div>
+      </div>
+      <div id="vsi-tax-section-${v.id}" style="${v.ownerType==='purchase'?'':'display:none'}">
+        <div style="background:var(--bg3);border-radius:var(--r-sm);padding:12px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:10px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:.08em">🏛️ 税金・固定費（購入車のみ）</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px">
+            <div>
+              <div style="font-size:9px;color:var(--text3);margin-bottom:4px">自動車税<br>（年額）</div>
+              <input type="number" class="fi" id="vsi-cartax-${v.id}" value="${v.carTax||''}" placeholder="43500" style="padding:9px 8px;font-size:13px">
+            </div>
+            <div>
+              <div style="font-size:9px;color:var(--text3);margin-bottom:4px">重量税<br>（2年毎）</div>
+              <input type="number" class="fi" id="vsi-weighttax-${v.id}" value="${v.weightTax||''}" placeholder="32800" style="padding:9px 8px;font-size:13px">
+            </div>
+            <div>
+              <div style="font-size:9px;color:var(--text3);margin-bottom:4px">自賠責<br>（2年毎）</div>
+              <input type="number" class="fi" id="vsi-jibaiseki-${v.id}" value="${v.jibaiseki||''}" placeholder="27840" style="padding:9px 8px;font-size:13px">
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--text3)">年換算: 自動車税 ¥${(parseInt(v.carTax)||0).toLocaleString()} ＋ 重量税・自賠責 ¥${Math.round(((parseInt(v.weightTax)||0)+(parseInt(v.jibaiseki)||0))/2).toLocaleString()} = 年間 ¥${((parseInt(v.carTax)||0)+Math.round(((parseInt(v.weightTax)||0)+(parseInt(v.jibaiseki)||0))/2)).toLocaleString()}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function setOwnerType(vid, type, btn){
+  const v=vehicles.find(v=>v.id===vid);if(!v)return;
+  v.ownerType=type;
+  const wrap=btn.closest('.vsi');
+  wrap.querySelectorAll('.type-btn').forEach(b=>{b.className='type-btn';});
+  btn.className=`type-btn active-${type}`;
+  document.getElementById(`vsi-purchase-${vid}`).style.display=type==='purchase'?'':'none';
+  document.getElementById(`vsi-lease-${vid}`).style.display=type==='lease'?'':'none';
+  document.getElementById(`vsi-tax-section-${vid}`).style.display=type==='purchase'?'':'none';
+}
+
+function saveVehicleSettings(){
+  vehicles.forEach(v=>{
+    const odo=document.getElementById(`vsi-odo-${v.id}`);
+    const plate=document.getElementById(`vsi-plate-${v.id}`);
+    const price=document.getElementById(`vsi-purchase-${v.id}-price`);
+    const monthly=document.getElementById(`vsi-lease-${v.id}-monthly`);
+    if(odo)   v.odo=parseInt(odo.value)||v.odo;
+    if(plate) v.plate=plate.value||v.plate;
+    if(price) v.purchasePrice=parseInt(price.value)||0;
+    if(monthly) v.leaseMonthly=parseInt(monthly.value)||0;
+    const cartax    = document.getElementById(`vsi-cartax-${v.id}`);
+    const weighttax = document.getElementById(`vsi-weighttax-${v.id}`);
+    const jibaiseki = document.getElementById(`vsi-jibaiseki-${v.id}`);
+    if(cartax)    v.carTax    = parseInt(cartax.value)||0;
+    if(weighttax) v.weightTax = parseInt(weighttax.value)||0;
+    if(jibaiseki) v.jibaiseki = parseInt(jibaiseki.value)||0;
+  });
+  save('vehicles_v4',vehicles);
+  populateSelects();
+  updateMaintTypes();
+  showToast('✅ 車両設定を保存しました');
+  closeModal();
+  renderHome();
+}
+
+// ═══════════ OIL ALERT ═══════════
+let selectedOilOpt=oilSetting.mode;
+function selectOilOpt(mode){
+  selectedOilOpt=mode;
+  ['km','month','both'].forEach(m=>{
+    document.getElementById('opt-'+m).classList.toggle('selected',m===mode);
+    document.getElementById('check-'+m).textContent=m===mode?'✓':'';
+  });
+  document.getElementById('thresh-km-row').style.display=(mode==='km'||mode==='both')?'flex':'none';
+  document.getElementById('thresh-km-warn-row').style.display=(mode==='km'||mode==='both')?'flex':'none';
+  document.getElementById('thresh-month-row').style.display=(mode==='month'||mode==='both')?'flex':'none';
+}
+
+function saveOilAlertSetting(){
+  oilSetting={mode:selectedOilOpt,threshKm:parseInt(document.getElementById('thresh-km').value)||5000,
+    warnKm:parseInt(document.getElementById('thresh-km-warn').value)||500,
+    threshMonth:parseInt(document.getElementById('thresh-month').value)||3};
+  save('oil_setting',oilSetting);
+  showToast('✅ オイルアラートを保存しました');
+  closeModal();renderSettings();renderHome();
+}
+
+function saveStaff(){
+  staffName=document.getElementById('staff-name-input').value.trim();
+  localStorage.setItem('staff_name',staffName);
+  showToast('✅ 担当者名を保存しました');
+  closeModal();renderSettings();
+}
+
+// ═══════════ EXPORT / CLEAR ═══════════
+function exportData(){
+  const blob=new Blob([JSON.stringify({vehicles,fuelRecs,oilRecs,maintRecs,oilSetting,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`maint-${new Date().toISOString().split('T')[0]}.json`;a.click();
+  showToast('📤 エクスポートしました');
+}
+
+function confirmClear(){
+  if(confirm('全データを削除しますか？元に戻せません。')){
+    ['fuel_recs','oil_recs','maint_recs'].forEach(k=>localStorage.removeItem(k));
+    fuelRecs=[];oilRecs=[];maintRecs=[];renderHome();renderFuelHist();
+    showToast('🗑️ データを削除しました');
+  }
+}
+
+// ═══════════ HIST ITEM ═══════════
+function histItemHTML(r){
+  const vname=vehicles.find(v=>v.id===r.vid)?.name||'—';
+  if(r._t==='fuel') return`<div class="hist-item"><div class="hist-ic">⛽</div>
+    <div class="hist-info"><div class="hist-main">${vname}　給油</div>
+    <div class="hist-sub">${r.liter}L ／ ${r.stand||'—'}${r.kmpl?' ／ '+r.kmpl+'km/L':''}</div></div>
+    <div class="hist-right"><div class="hist-cost">${r.amount?'¥'+parseInt(r.amount).toLocaleString():'—'}</div><div class="hist-date">${r.date}</div></div></div>`;
+  if(r._t==='oil') return`<div class="hist-item"><div class="hist-ic">🛢️</div>
+    <div class="hist-info"><div class="hist-main">${vname}　オイル交換</div>
+    <div class="hist-sub">${parseInt(r.odo||0).toLocaleString()}km ／ ${r.shop||'—'}</div></div>
+    <div class="hist-right"><div class="hist-cost">${r.cost?'¥'+parseInt(r.cost).toLocaleString():'—'}</div><div class="hist-date">${r.date}</div></div></div>`;
+  return`<div class="hist-item"><div class="hist-ic">🔧</div>
+    <div class="hist-info"><div class="hist-main">${vname}　${r.type||'整備'}</div>
+    <div class="hist-sub">${r.content||'—'} ／ ${r.shop||'—'}</div></div>
+    <div class="hist-right"><div class="hist-cost">${r.cost?'¥'+parseInt(r.cost).toLocaleString():'—'}</div><div class="hist-date">${r.date}</div></div></div>`;
+}
+
+// ═══════════ MODAL ═══════════
+function openModal(id){
+  if(id==='modal-vehicles') openVehicleModal();
+  if(id==='modal-staff') document.getElementById('staff-name-input').value=staffName;
+  if(id==='modal-pin') ['pin-current','pin-new','pin-confirm'].forEach(id2=>document.getElementById(id2).value='');
+  if(id==='modal-oil-alert'){
+    selectOilOpt(oilSetting.mode);
+    document.getElementById('thresh-km').value=oilSetting.threshKm;
+    document.getElementById('thresh-km-warn').value=oilSetting.warnKm;
+    document.getElementById('thresh-month').value=oilSetting.threshMonth;
+  }
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(){document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('open'));}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal();}));
+
+// ═══════════ TOAST ═══════════
+function showToast(msg,isErr=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(isErr?' err':'')+' show';
+  setTimeout(()=>t.className='toast',3000);
+}
+
+// ═══════════ INIT ═══════════
+window.addEventListener('DOMContentLoaded',()=>{
+  initPin();
+  const today=new Date().toISOString().split('T')[0];
+  ['f-date','o-date','m-date'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=today;});
+  populateSelects();
+  renderHome();
+  renderFuelHist();
+});
+
+// ═══════════════════════════════
+// PIN AUTHENTICATION
+// ═══════════════════════════════
+let pinBuffer = '';
+
+function pinKey(k) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += k;
+  updatePinDots();
+  if (pinBuffer.length === 4) {
+    setTimeout(checkPin, 120);
+  }
+}
+
+function pinDel() {
+  pinBuffer = pinBuffer.slice(0, -1);
+  updatePinDots();
+  document.getElementById('pin-error').textContent = '';
+}
+
+function updatePinDots(state) {
+  for (let i = 0; i < 4; i++) {
+    const d = document.getElementById('pd' + i);
+    d.classList.remove('filled', 'error');
+    if (state === 'error') d.classList.add('error');
+    else if (i < pinBuffer.length) d.classList.add('filled');
+  }
+}
+
+function checkPin() {
+  const stored = localStorage.getItem('app_pin') || '1234';
+  if (pinBuffer === stored) {
+    sessionStorage.setItem('pin_ok', '1');
+    document.getElementById('pin-overlay').style.display = 'none';
+  } else {
+    updatePinDots('error');
+    document.getElementById('pin-error').textContent = 'PINが違います';
+    pinBuffer = '';
+    setTimeout(() => {
+      updatePinDots();
+      document.getElementById('pin-error').textContent = '';
+    }, 900);
+  }
+}
+
+function savePin() {
+  const cur     = document.getElementById('pin-current').value;
+  const newPin  = document.getElementById('pin-new').value;
+  const confirm = document.getElementById('pin-confirm').value;
+  const stored  = localStorage.getItem('app_pin') || '1234';
+  if (cur !== stored)           { showToast('⚠️ 現在のPINが違います', true); return; }
+  if (!/^[0-9]{4}$/.test(newPin)) { showToast('⚠️ 4桁の数字で入力してください', true); return; }
+  if (newPin !== confirm)       { showToast('⚠️ 確認PINが一致しません', true); return; }
+  localStorage.setItem('app_pin', newPin);
+  showToast('✅ PINを変更しました');
+  closeModal();
+  ['pin-current','pin-new','pin-confirm'].forEach(id => document.getElementById(id).value = '');
+}
+
+function initPin() {
+  if (sessionStorage.getItem('pin_ok') === '1') {
+    document.getElementById('pin-overlay').style.display = 'none';
+  }
+}
+
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('service-worker.js')
+      .then(r=>console.log('SW registered'))
+      .catch(e=>console.log('SW error',e));
+  });
+}
+</script>
+</body>
+</html>
