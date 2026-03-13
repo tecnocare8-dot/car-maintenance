@@ -27,7 +27,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-serif;overscroll-behavior:none}
 .app{display:flex;flex-direction:column;height:100dvh;max-width:430px;margin:0 auto;background:var(--bg)}
- 
+
 /* HEADER */
 .hdr{background:var(--bg2);padding:50px 18px 13px;border-bottom:1px solid var(--border);flex-shrink:0}
 .hdr-row{display:flex;align-items:center;justify-content:space-between}
@@ -35,25 +35,25 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .hdr-title em{color:var(--primary);font-style:normal}
 .hdr-sub{font-size:11px;color:var(--text3);margin-top:3px}
 .hdr-icon{width:36px;height:36px;background:var(--primary-dim);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
- 
+
 /* SCROLL */
 .content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;padding-bottom:calc(var(--tab-h)+20px)}
- 
+
 /* PAGE */
 .page{display:none}.page.active{display:block}
- 
+
 /* TAB BAR */
 .tab-bar{height:var(--tab-h);background:var(--bg2);border-top:1px solid var(--border);display:flex;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
 .tb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;color:var(--text3);font-size:9px;font-weight:700;letter-spacing:.02em;transition:color .15s;padding-top:5px}
 .tb.active{color:var(--primary)}
 .tb-ic{font-size:18px;width:30px;height:27px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:background .15s}
 .tb.active .tb-ic{background:var(--primary-dim)}
- 
+
 /* ALERT */
 .alert-bar{background:linear-gradient(90deg,var(--danger-dim),transparent);border:1px solid rgba(255,79,94,.4);border-radius:var(--r-sm);padding:11px 13px;display:flex;gap:9px;margin-bottom:12px}
 .alert-bar-ic{font-size:15px;flex-shrink:0;margin-top:1px}
 .alert-bar-txt{font-size:12px;color:var(--danger);font-weight:600;line-height:1.6}
- 
+
 /* COST HERO */
 .cost-hero{background:linear-gradient(135deg,#0e1f33,var(--surface));border-radius:var(--r);padding:18px;border:1px solid var(--border);margin-bottom:12px}
 .ch-lbl{font-size:11px;color:var(--text2);margin-bottom:3px}
@@ -63,12 +63,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .ch-bk-item{background:var(--bg3);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center}
 .ch-bk-lbl{font-size:11px;color:var(--text2)}
 .ch-bk-val{font-size:13px;font-weight:700}
- 
+
 /* SEC HDR */
 .sh{display:flex;align-items:center;justify-content:space-between;margin:16px 0 9px}
 .sh-t{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.09em}
 .sh-a{font-size:11px;color:var(--primary);cursor:pointer}
- 
+
 /* OIL LIST */
 .oil-list{display:flex;flex-direction:column;gap:8px}
 .oil-card{background:var(--surface);border-radius:var(--r-sm);padding:13px;display:flex;align-items:center;gap:11px;border-left:3px solid var(--border)}
@@ -82,7 +82,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .oil-rem{font-size:12px;font-weight:700}
 .oil-rem.ov{color:var(--danger)}.oil-rem.soon{color:var(--warn)}.oil-rem.ok{color:var(--success)}
 .oil-nxt{font-size:10px;color:var(--text3);margin-top:2px}
- 
+
 /* HIST */
 .hist-list{display:flex;flex-direction:column;gap:8px}
 .hist-item{background:var(--surface);border-radius:var(--r-sm);padding:12px;display:flex;align-items:center;gap:11px}
@@ -93,7 +93,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .hist-right{text-align:right;flex-shrink:0}
 .hist-cost{font-size:12px;font-weight:700;color:var(--accent)}
 .hist-date{font-size:10px;color:var(--text3);margin-top:2px}
- 
+
 /* VEHICLE TABLE */
 .vtable{background:var(--surface);border-radius:var(--r);overflow:hidden;margin-bottom:12px}
 .vtr{display:grid;grid-template-columns:22px 1fr auto auto;align-items:center;gap:10px;padding:12px 13px;border-bottom:1px solid var(--border)}
@@ -103,7 +103,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .vtr-name{font-size:13px;font-weight:700}
 .vtr-km{font-size:10px;color:var(--text2)}
 .vtr-cost{font-size:13px;font-weight:700;color:var(--accent);text-align:right}
- 
+
 /* BADGE */
 .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
 .bg-r{background:var(--danger-dim);color:var(--danger)}
@@ -112,7 +112,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .bg-b{background:var(--primary-dim);color:var(--primary)}
 .bg-p{background:var(--purple-dim);color:var(--purple)}
 .bg-gr{background:var(--bg3);color:var(--text2)}
- 
+
 /* FUEL SUMMARY */
 .fuel-card{background:var(--surface);border-radius:var(--r);padding:15px;margin-bottom:10px}
 .fuel-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
@@ -123,7 +123,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .fuel-stat-val{font-size:14px;font-weight:900;font-family:'Zen Kaku Gothic New',sans-serif}
 .good{color:var(--success)}.bad{color:var(--danger)}.neu{color:var(--accent)}
 .fuel-stat-lbl{font-size:9px;color:var(--text3);margin-top:2px}
- 
+
 /* FORM */
 .form-card{background:var(--surface);border-radius:var(--r);padding:16px;margin-bottom:12px}
 .fc-title{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:7px}
@@ -134,20 +134,20 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .fi::placeholder{color:var(--text3)}
 .fi-hint{font-size:10px;color:var(--text3);margin-top:4px}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
- 
+
 /* CALC BOX */
 .calc-box{background:var(--primary-dim);border:1px solid rgba(79,172,255,.3);border-radius:var(--r-sm);padding:12px 14px;margin:4px 0 14px;display:none;align-items:center;gap:20px}
 .calc-box.show{display:flex}
 .calc-main{font-size:24px;font-weight:900;color:var(--primary);font-family:'Zen Kaku Gothic New',sans-serif;line-height:1}
 .calc-sub{font-size:10px;color:var(--text2);margin-top:3px}
- 
+
 /* BTN */
 .btn{width:100%;padding:14px;border-radius:var(--r-sm);border:none;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity .15s,transform .12s}
 .btn:active{opacity:.8;transform:scale(.98)}
 .btn-p{background:var(--primary);color:#fff}
 .btn-a{background:var(--accent);color:#000}
 .btn-g{background:var(--surface2);color:var(--text);margin-top:10px}
- 
+
 /* SETTINGS */
 .setting-card{background:var(--surface);border-radius:var(--r);overflow:hidden;margin-bottom:10px}
 .setting-row{display:flex;align-items:center;padding:14px;border-bottom:1px solid var(--border);gap:12px;cursor:pointer;transition:background .15s}
@@ -157,13 +157,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .setting-info{flex:1}
 .setting-name{font-size:13px;font-weight:700}
 .setting-desc{font-size:11px;color:var(--text2);margin-top:2px}
- 
+
 /* TOGGLE (purchase/lease) */
 .type-toggle{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
 .type-btn{padding:12px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center;transition:all .15s}
 .type-btn.active-purchase{border-color:var(--primary);background:var(--primary-dim);color:var(--primary)}
 .type-btn.active-lease{border-color:var(--purple);background:var(--purple-dim);color:var(--purple)}
- 
+
 /* OIL ALERT OPTIONS */
 .oil-alert-options{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
 .oil-opt{display:flex;align-items:center;gap:12px;background:var(--bg3);border-radius:var(--r-sm);padding:13px;cursor:pointer;border:1.5px solid var(--border);transition:border-color .15s}
@@ -181,13 +181,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .oil-thresh-input{flex:1;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--text);font-size:14px;font-family:inherit}
 .oil-thresh-input:focus{outline:none;border-color:var(--primary)}
 .oil-thresh-unit{font-size:11px;color:var(--text3);white-space:nowrap}
- 
+
 /* VEHICLE SETTING CARD */
 .vsi{background:var(--surface);border-radius:var(--r);padding:15px;margin-bottom:10px}
 .vsi-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .vsi-name{font-size:14px;font-weight:700}
 .vsi-plate-badge{font-size:10px;color:var(--text2);background:var(--bg3);padding:2px 7px;border-radius:4px;display:inline-block;margin-top:2px}
- 
+
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;display:none;align-items:flex-end;justify-content:center}
 .modal-overlay.open{display:flex}
@@ -195,21 +195,21 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px}
 .modal-title{font-size:17px;font-weight:900;margin-bottom:18px}
- 
+
 /* TOAST */
 .toast{position:fixed;top:58px;left:50%;transform:translateX(-50%);background:var(--success);color:#000;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:500;display:none;white-space:nowrap}
 .toast.show{display:block;animation:toastIn .2s ease}
 .toast.err{background:var(--danger);color:#fff}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
- 
+
 .empty{text-align:center;padding:28px 20px;color:var(--text3);font-size:13px}
 .empty-ic{font-size:34px;margin-bottom:8px;display:block}
- 
+
 /* ── ANALYSIS PAGE ── */
 .period-tabs{display:flex;gap:6px;margin-bottom:14px}
 .ptab{flex:1;padding:9px;border-radius:var(--r-sm);background:var(--surface);color:var(--text2);font-size:12px;font-weight:700;text-align:center;cursor:pointer;border:1.5px solid var(--border);transition:all .15s}
 .ptab.active{background:var(--primary-dim);color:var(--primary);border-color:var(--primary)}
- 
+
 .grand-hero{background:linear-gradient(135deg,#09192e,#0f2540,var(--surface));border-radius:var(--r);padding:18px;border:1px solid var(--border);margin-bottom:12px;position:relative;overflow:hidden}
 .grand-hero::before{content:'¥';position:absolute;right:-8px;top:-14px;font-size:110px;color:rgba(79,172,255,.04);font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;pointer-events:none}
 .gh-lbl{font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.09em;margin-bottom:3px}
@@ -221,7 +221,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .gh-row.is-total span:last-child{color:var(--primary);font-size:15px;font-weight:900}
 .gh-row span:first-child{font-size:11px;color:var(--text2)}
 .gh-row span:last-child{font-size:13px;font-weight:700}
- 
+
 .chart-wrap{background:var(--surface);border-radius:var(--r);padding:16px;margin-bottom:12px}
 .chart-ttl{font-size:11px;color:var(--text2);font-weight:700;margin-bottom:12px}
 .bar-row{display:flex;align-items:flex-end;gap:3px;height:70px;margin-bottom:5px}
@@ -230,7 +230,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .bar-fill.cur{background:var(--accent)}
 .bar-fill.past{background:var(--primary-dim);border:1px solid rgba(79,172,255,.3)}
 .bar-lbl{font-size:8px;margin-top:4px;font-weight:600}
- 
+
 .vc-card{background:var(--surface);border-radius:var(--r);padding:15px;margin-bottom:10px}
 .vc-top{display:flex;align-items:center;gap:10px;margin-bottom:11px}
 .vc-name{font-size:14px;font-weight:700}
@@ -245,7 +245,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 .share-bar-wrap{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-bottom:4px}
 .share-bar-fill{height:100%;border-radius:3px;background:var(--primary);transition:width .5s}
 .share-txt{font-size:10px;color:var(--text3)}
- 
+
 /* PURCHASE vs LEASE */
 .pvl-wrap{background:var(--surface);border-radius:var(--r);padding:16px;margin-bottom:12px}
 .pvl-verdict{border-radius:var(--r-sm);padding:14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px}
@@ -282,7 +282,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
 </style>
 </head>
 <body>
- 
+
 <!-- ===== PIN LOGIN OVERLAY ===== -->
 <div id="pin-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:#0b0f14;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px">
   <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:22px;font-weight:900;color:#4facff;margin-bottom:6px">🚐 送迎車メンテ管理</div>
@@ -317,9 +317,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     </tr>
   </table>
 </div>
- 
+
 <div class="app">
- 
+
   <!-- HEADER -->
   <div class="hdr">
     <div class="hdr-row">
@@ -330,9 +330,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
       <div class="hdr-icon">🚐</div>
     </div>
   </div>
- 
+
   <div class="content">
- 
+
     <!-- ===== 給油 ===== -->
     <div id="page-fuel" class="page active">
       <div class="form-card">
@@ -377,34 +377,34 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
         </div>
         <button class="btn btn-p" onclick="saveFuel()">⛽ 給油記録を保存</button>
       </div>
- 
+
       <div class="sh"><span class="sh-t">🕐 給油履歴</span></div>
       <div class="hist-list" id="fuel-hist"></div>
     </div>
- 
+
     <!-- ===== ホーム ===== -->
     <div id="page-home" class="page">
       <div class="alert-bar" id="alert-area" style="display:none">
         <div class="alert-bar-ic">⚠️</div>
         <div class="alert-bar-txt" id="alert-text"></div>
       </div>
- 
+
       <div class="cost-hero">
         <div class="ch-lbl">今月の維持費合計</div>
         <div class="ch-val" id="total-cost">¥0<span id="total-month"></span></div>
         <div class="ch-bk" id="cost-breakdown"></div>
       </div>
- 
+
       <div class="sh"><span class="sh-t">🛢️ オイル交換状況</span></div>
       <div class="oil-list" id="oil-status-list"></div>
- 
+
       <div class="sh" style="margin-top:18px">
         <span class="sh-t">🕐 最近の記録</span>
         <span class="sh-a" onclick="switchTab('hist')">すべて →</span>
       </div>
       <div class="hist-list" id="recent-hist"></div>
     </div>
- 
+
     <!-- ===== オイル ===== -->
     <div id="page-oil" class="page">
       <div class="alert-bar" id="oil-warn-banner" style="display:none">
@@ -457,7 +457,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
       <div class="sh"><span class="sh-t">🕐 オイル交換履歴</span></div>
       <div class="hist-list" id="oil-hist"></div>
     </div>
- 
+
     <!-- ===== 整備 ===== -->
     <div id="page-maint" class="page">
       <div class="form-card">
@@ -495,39 +495,39 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
       <div class="sh"><span class="sh-t">🕐 整備・修理履歴</span></div>
       <div class="hist-list" id="maint-hist"></div>
     </div>
- 
+
     <!-- ===== 集計 ===== -->
     <div id="page-hist" class="page">
- 
+
       <!-- 期間切替 -->
       <div class="period-tabs">
         <div class="ptab active" id="ptab-month" onclick="setPeriod('month')">今月</div>
         <div class="ptab" id="ptab-year"  onclick="setPeriod('year')">今年度</div>
         <div class="ptab" id="ptab-all"   onclick="setPeriod('all')">累計</div>
       </div>
- 
+
       <!-- 全車グランドトータル -->
       <div class="grand-hero">
         <div class="gh-lbl" id="gh-lbl">全車 今月コスト</div>
         <div class="gh-total" id="gh-total">¥0</div>
         <div class="gh-bk" id="gh-bk"></div>
       </div>
- 
+
       <!-- 月別コスト推移 -->
       <div class="chart-wrap">
         <div class="chart-ttl">📅 月別コスト推移（今年）</div>
         <div class="bar-row" id="month-bars"></div>
         <div style="display:flex;gap:3px" id="month-lbls"></div>
       </div>
- 
+
       <!-- 車両別コスト -->
       <div class="sh"><span class="sh-t">🚐 車両別コスト</span></div>
       <div id="vc-list"></div>
- 
+
       <!-- 燃費サマリー -->
       <div class="sh"><span class="sh-t">⛽ 車両別 燃費</span></div>
       <div id="fuel-summary"></div>
- 
+
       <!-- 購入 vs リース -->
       <div class="sh"><span class="sh-t">⚖️ 購入 vs リース 実績比較</span></div>
       <div class="pvl-wrap">
@@ -579,9 +579,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
           </div>
         </div>
       </div>
- 
+
     </div>
- 
+
     <!-- ===== 設定 ===== -->
     <div id="page-settings" class="page">
       <div class="sh" style="margin-top:0"><span class="sh-t">⚙️ 設定</span></div>
@@ -611,7 +611,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
           <span style="color:var(--text3)">›</span>
         </div>
       </div>
- 
+
       <div class="sh"><span class="sh-t">🔐 セキュリティ</span></div>
       <div class="setting-card">
         <div class="setting-row" onclick="openModal('modal-pin')">
@@ -623,7 +623,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
           <span style="color:var(--text3)">›</span>
         </div>
       </div>
- 
+
       <div class="sh"><span class="sh-t">🗄️ データ</span></div>
       <div class="setting-card">
         <div class="setting-row" onclick="exportData()">
@@ -634,7 +634,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
           </div>
           <span style="color:var(--text3)">›</span>
         </div>
-        <div class="setting-row" onclick="confirmClear()">
+        <div class="setting-row" onclick="openModal('modal-clear')">
           <div class="setting-ic" style="background:var(--danger-dim)">🗑️</div>
           <div class="setting-info">
             <div class="setting-name">全データを削除</div>
@@ -645,9 +645,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
       </div>
       <div style="text-align:center;padding:20px;font-size:11px;color:var(--text3);line-height:1.8">送迎車メンテナンス管理 v4.0</div>
     </div>
- 
+
   </div><!-- /content -->
- 
+
   <!-- TAB BAR: 給油・オイル・整備・ホーム・集計・設定 -->
   <div class="tab-bar">
     <div class="tb active" onclick="switchTab('fuel')">
@@ -670,7 +670,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     </div>
   </div>
 </div>
- 
+
 <!-- ===== MODAL: 車両設定 ===== -->
 <div class="modal-overlay" id="modal-vehicles">
   <div class="modal">
@@ -681,7 +681,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     <button class="btn btn-g" onclick="closeModal()">閉じる</button>
   </div>
 </div>
- 
+
 <!-- ===== MODAL: オイルアラート ===== -->
 <div class="modal-overlay" id="modal-oil-alert">
   <div class="modal">
@@ -725,7 +725,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     <button class="btn btn-g" onclick="closeModal()">閉じる</button>
   </div>
 </div>
- 
+
 <!-- ===== MODAL: 担当者 ===== -->
 <div class="modal-overlay" id="modal-staff">
   <div class="modal">
@@ -739,8 +739,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     <button class="btn btn-g" onclick="closeModal()">閉じる</button>
   </div>
 </div>
- 
- 
+
+
 <!-- ===== MODAL: PIN変更 ===== -->
 <div class="modal-overlay" id="modal-pin">
   <div class="modal">
@@ -762,9 +762,23 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto S
     <button class="btn btn-g" onclick="closeModal()">閉じる</button>
   </div>
 </div>
- 
+
+
+<!-- ===== MODAL: データ削除確認 ===== -->
+<div class="modal-overlay" id="modal-clear">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🗑️ 全データを削除</div>
+    <div style="background:var(--danger-dim);border:1px solid rgba(255,79,94,.4);border-radius:var(--r-sm);padding:14px;margin-bottom:18px;font-size:13px;color:var(--danger);line-height:1.7">
+      ⚠️ 給油・オイル・整備の記録、車両設定、担当者名がすべて削除されます。<br>この操作は<strong>元に戻せません</strong>。
+    </div>
+    <button class="btn" style="background:var(--danger);color:#fff;margin-bottom:10px" onclick="execClear()">🗑️ すべて削除する</button>
+    <button class="btn btn-g" onclick="closeModal()">キャンセル</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
- 
+
 <script>
 // ═══════════ DATA ═══════════
 const DEFAULT_VEHICLES = [
@@ -774,27 +788,27 @@ const DEFAULT_VEHICLES = [
   {id:'v4',name:'さくら4号',plate:'大阪 500 え 3456',type:'ハイエース',odo:42100,ownerType:'lease',purchasePrice:0,leaseMonthly:48000,carTax:0,weightTax:0,jibaiseki:0},
   {id:'v5',name:'さくら5号',plate:'大阪 500 お 7890',type:'キャラバン',odo:28600,ownerType:'purchase',purchasePrice:2200000,leaseMonthly:0,carTax:43500,weightTax:32800,jibaiseki:27840},
 ];
- 
+
 function load(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
 function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
- 
+
 let vehicles   = load('vehicles_v4', DEFAULT_VEHICLES);
 let fuelRecs   = load('fuel_recs', []);
 let oilRecs    = load('oil_recs', []);
 let maintRecs  = load('maint_recs', []);
 let oilSetting = load('oil_setting', {mode:'km',threshKm:5000,warnKm:500,threshMonth:3});
 let staffName  = localStorage.getItem('staff_name') || '';
- 
+
 // ═══════════ MAINT TYPES ═══════════
 const MAINT_TYPES_BASE = ['タイヤ交換','修理（故障）','バッテリー交換','ブレーキパッド交換','6ヶ月点検','法定12ヶ月点検','その他'];
 const MAINT_TYPE_SHAKKEN = '車検';
- 
+
 function getMaintTypes(vid) {
   const v = vehicles.find(v=>v.id===vid);
   const isPurchase = !v || v.ownerType === 'purchase';
   return isPurchase ? [MAINT_TYPE_SHAKKEN, ...MAINT_TYPES_BASE] : MAINT_TYPES_BASE;
 }
- 
+
 function updateMaintTypes() {
   const vid = document.getElementById('m-vehicle')?.value;
   const sel = document.getElementById('m-type');
@@ -802,7 +816,7 @@ function updateMaintTypes() {
   const types = getMaintTypes(vid);
   sel.innerHTML = types.map(t => `<option>${t}</option>`).join('');
 }
- 
+
 // ═══════════ NAV ═══════════
 function switchTab(tab) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -818,7 +832,7 @@ function switchTab(tab) {
   if(tab==='hist')     renderHistPage();
   if(tab==='settings') renderSettings();
 }
- 
+
 function populateSelects() {
   ['f-vehicle','o-vehicle','m-vehicle'].forEach(id=>{
     const el=document.getElementById(id);
@@ -829,7 +843,7 @@ function populateSelects() {
   document.getElementById('m-vehicle')?.addEventListener('change', updateMaintTypes);
   document.getElementById('hdr-sub').textContent = `${vehicles.length}台管理中`;
 }
- 
+
 // ═══════════ FUEL CALC ═══════════
 function calcFuel() {
   const vid   = document.getElementById('f-vehicle').value;
@@ -848,7 +862,7 @@ function calcFuel() {
   document.getElementById('fuel-unit').textContent=amount?`¥${(amount/liter).toFixed(1)}`:'—';
   box.classList.add('show');
 }
- 
+
 // ═══════════ SAVE FUEL ═══════════
 function saveFuel(){
   const vid   =document.getElementById('f-vehicle').value;
@@ -872,7 +886,7 @@ function saveFuel(){
   document.getElementById('fuel-calc').classList.remove('show');
   renderFuelHist();
 }
- 
+
 function renderFuelHist(){
   const el=document.getElementById('fuel-hist');
   if(!fuelRecs.length){el.innerHTML='<div class="empty"><span class="empty-ic">⛽</span>給油記録がありません</div>';return;}
@@ -887,7 +901,7 @@ function renderFuelHist(){
     </div>`;
   }).join('');
 }
- 
+
 // ═══════════ HOME ═══════════
 function renderHome(){
   const now=new Date();
@@ -900,22 +914,22 @@ function renderHome(){
   // lease cost this month
   const leaseCost=vehicles.filter(v=>v.ownerType==='lease').reduce((a,v)=>a+(parseInt(v.leaseMonthly)||0),0);
   const total=fCost+oCost+mCost+leaseCost;
- 
+
   const ym=`${now.getFullYear()}年${now.getMonth()+1}月`;
   document.getElementById('total-cost').innerHTML=`¥${total.toLocaleString()}<span>${ym}</span>`;
- 
+
   // 車検費（購入車のみ・maintRecsから今月分）
   const shakkenCost = maintRecs.filter(r => mf(r) && r.type === '車検').reduce((a,r) => a+(parseInt(r.cost)||0), 0);
   // 購入費（購入車の購入価格合計・参考表示）
   const purchaseTotal = vehicles.filter(v=>v.ownerType==='purchase').reduce((a,v)=>a+(parseInt(v.purchasePrice)||0),0);
- 
+
   const lines=[];
   lines.push({lbl:'⛽ ガソリン代',    val:fCost,    always:true});
   lines.push({lbl:'🛢️ オイル交換費',  val:oCost,    always:true});
   lines.push({lbl:'🔧 整備・修理費',  val:mCost,    always:true});
   if(leaseCost>0)    lines.push({lbl:'📋 リース月額',val:leaseCost});
   if(shakkenCost>0)  lines.push({lbl:'🔍 車検費用',  val:shakkenCost,note:'購入車のみ'});
- 
+
   document.getElementById('cost-breakdown').innerHTML=lines.map(l=>`
     <div class="ch-bk-item">
       <span class="ch-bk-lbl">${l.lbl}${l.note?`<span style="font-size:9px;color:var(--text3);margin-left:4px">(${l.note})</span>`:''}</span>
@@ -926,9 +940,9 @@ function renderHome(){
       <span class="ch-bk-lbl">🔑 購入価格合計<span style="font-size:9px;color:var(--text3);margin-left:4px">(参考)</span></span>
       <span class="ch-bk-val" style="color:var(--text2)">¥${purchaseTotal.toLocaleString()}</span>
     </div>` : '');
- 
+
   renderOilStatus();
- 
+
   // recent
   const all=[
     ...fuelRecs.map(r=>({...r,_t:'fuel'})),
@@ -937,19 +951,19 @@ function renderHome(){
   ].sort((a,b)=>b.date>a.date?1:-1).slice(0,5);
   const re=document.getElementById('recent-hist');
   re.innerHTML=all.length?all.map(r=>histItemHTML(r)).join(''):'<div class="empty"><span class="empty-ic">📋</span>まだ記録がありません</div>';
- 
+
   // alert
   const ov=getOilOverdue();
   const ae=document.getElementById('alert-area');
   if(ov.length){ae.style.display='flex';document.getElementById('alert-text').textContent=ov.map(v=>`${v.name}：${v.msg}`).join(' ／ ');}
   else ae.style.display='none';
 }
- 
+
 function getOilOverdue(){
   return vehicles.filter(v=>{const s=calcOilStatus(v);return s.level==='ov'||s.level==='soon';})
     .map(v=>{const s=calcOilStatus(v);return{name:v.name,msg:s.level==='ov'?`オイル交換超過（${s.remText}）`:`オイル交換まもなく（${s.remText}）`};});
 }
- 
+
 function renderOilStatus(){
   document.getElementById('oil-status-list').innerHTML=vehicles.map(v=>{
     const st=calcOilStatus(v);
@@ -962,9 +976,9 @@ function renderOilStatus(){
     </div>`;
   }).join('');
 }
- 
+
 function getLastOil(vid){return oilRecs.filter(r=>r.vid===vid).sort((a,b)=>b.date>a.date?1:-1)[0]||null;}
- 
+
 function calcOilStatus(v){
   const s=oilSetting;const last=getLastOil(v.id);
   if(s.mode==='km'||s.mode==='both'){
@@ -985,7 +999,7 @@ function calcOilStatus(v){
   }
   return{level:'ok',remText:'—',nxtText:'—'};
 }
- 
+
 // ═══════════ OIL ═══════════
 function autoNextOdo(){
   const odo=parseInt(document.getElementById('o-odo').value);
@@ -993,7 +1007,7 @@ function autoNextOdo(){
   document.getElementById('o-next-odo').value=odo+oilSetting.threshKm;
   document.getElementById('o-odo-hint').textContent=`${odo.toLocaleString()} + ${oilSetting.threshKm.toLocaleString()}km`;
 }
- 
+
 function renderOilPage(){
   const ov=vehicles.filter(v=>calcOilStatus(v).level==='ov');
   const wb=document.getElementById('oil-warn-banner');
@@ -1001,7 +1015,7 @@ function renderOilPage(){
   else wb.style.display='none';
   renderOilHist();
 }
- 
+
 function saveOil(){
   const vid=document.getElementById('o-vehicle').value;
   const date=document.getElementById('o-date').value;
@@ -1020,7 +1034,7 @@ function saveOil(){
   ['o-odo','o-next-odo','o-cost','o-shop','o-note','o-next-date'].forEach(id=>document.getElementById(id).value='');
   renderOilHist();renderHome();
 }
- 
+
 function renderOilHist(){
   const el=document.getElementById('oil-hist');
   if(!oilRecs.length){el.innerHTML='<div class="empty"><span class="empty-ic">🛢️</span>オイル交換記録がありません</div>';return;}
@@ -1033,10 +1047,10 @@ function renderOilHist(){
     </div>`;
   }).join('');
 }
- 
+
 // ═══════════ MAINT ═══════════
 function renderMaintPage(){ updateMaintTypes(); renderMaintHist(); }
- 
+
 function saveMaint(){
   const vid=document.getElementById('m-vehicle').value;
   const date=document.getElementById('m-date').value;
@@ -1052,7 +1066,7 @@ function saveMaint(){
   ['m-content','m-cost','m-shop'].forEach(id=>document.getElementById(id).value='');
   renderMaintHist();
 }
- 
+
 function renderMaintHist(){
   const el=document.getElementById('maint-hist');
   if(!maintRecs.length){el.innerHTML='<div class="empty"><span class="empty-ic">🔧</span>整備記録がありません</div>';return;}
@@ -1067,7 +1081,7 @@ function renderMaintHist(){
     </div>`;
   }).join('');
 }
- 
+
 // ═══════════ HIST PAGE ═══════════
 // ═══ PERIOD ═══
 let currentPeriod='month';
@@ -1088,7 +1102,7 @@ function getPeriodLabel(){
   if(currentPeriod==='year')return now.getFullYear()+'年度';
   return '累計';
 }
- 
+
 // ═══ 車両コスト集計 ═══
 function calcVC(v,pf){
   const fuel=fuelRecs.filter(r=>r.vid===v.id&&pf(r)).reduce((a,r)=>a+(parseInt(r.amount)||0),0);
@@ -1106,11 +1120,11 @@ function calcVC(v,pf){
   const ins=currentPeriod==='month'?Math.round(insY/12):insY;
   return{fuel,oil,repair,shaken,lease,tax,ins,total:fuel+oil+repair+shaken+lease+tax+ins};
 }
- 
+
 function renderHistPage(){
   const pf=getPeriodFilter();
   const lbl=getPeriodLabel();
- 
+
   // グランドトータル
   let gf=0,go=0,gr=0,gs=0,gl=0,gt=0,gi=0;
   vehicles.forEach(v=>{const c=calcVC(v,pf);gf+=c.fuel;go+=c.oil;gr+=c.repair;gs+=c.shaken;gl+=c.lease;gt+=c.tax;gi+=c.ins;});
@@ -1129,7 +1143,7 @@ function renderHistPage(){
     <div class="gh-row${r.tot?' is-total':''}">
       <span>${r.l}</span><span>¥${r.v.toLocaleString()}</span>
     </div>`).join('');
- 
+
   // 月別バーチャート
   const now=new Date();const yr=now.getFullYear();const curM=now.getMonth();
   const MOS=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
@@ -1148,7 +1162,7 @@ function renderHistPage(){
   }).join('');
   document.getElementById('month-lbls').innerHTML=MOS.map((m,i)=>`
     <div style="flex:1;text-align:center;font-size:8px;color:${i===curM?'var(--accent)':'var(--text3)'};font-weight:${i===curM?700:400}">${m}</div>`).join('');
- 
+
   // 車両別コスト
   const vcData=vehicles.map(v=>({v,c:calcVC(v,pf)}));
   const maxVT=Math.max(...vcData.map(x=>x.c.total),1);
@@ -1175,7 +1189,7 @@ function renderHistPage(){
       <div class="share-txt">全車中 ${share}% を占める</div>
     </div>`;
   }).join('');
- 
+
   // 燃費サマリー
   document.getElementById('fuel-summary').innerHTML=vehicles.map(v=>{
     const vr=fuelRecs.filter(r=>r.vid===v.id);
@@ -1197,12 +1211,12 @@ function renderHistPage(){
       </div>
     </div>`;
   }).join('');
- 
+
   // 購入 vs リース 実績比較
   renderPvL();
   runSim();
 }
- 
+
 // ═══ 購入 vs リース 実績比較 ═══
 function realAnnual(vArr){
   // 全記録から月平均コストを算出して年換算
@@ -1221,24 +1235,24 @@ function realAnnual(vArr){
   });
   return perVehicle.reduce((a,v)=>a+v,0)/vArr.length;
 }
- 
+
 function renderPvL(){
   const pV=vehicles.filter(v=>v.ownerType==='purchase');
   const lV=vehicles.filter(v=>v.ownerType==='lease');
   const verdictEl=document.getElementById('pvl-verdict-area');
   const colsEl=document.getElementById('pvl-cols');
- 
+
   if(!pV.length&&!lV.length){
     verdictEl.innerHTML='<div class="empty"><span class="empty-ic">⚖️</span>設定から車両の購入/リースを設定してください</div>';
     colsEl.innerHTML='';return;
   }
- 
+
   const pMaintAnnual=realAnnual(pV);   // 購入車の実績年間メンテ費（1台平均）
   const lMaintAnnual=realAnnual(lV);   // リース車の実績年間メンテ費（1台平均）
   const lMonthAvg=lV.reduce((a,v)=>a+(parseInt(v.leaseMonthly)||0),0)/Math.max(lV.length,1);
   const lTotalAnnual=lMonthAvg*12+lMaintAnnual;  // リース：月額＋運用
   const pTotalAnnual=pMaintAnnual;               // 購入：メンテのみ（初期費用別）
- 
+
   // シミュレーター初期値を実績で自動セット
   if(pV.length){
     const pp=pV.reduce((a,v)=>a+(parseInt(v.purchasePrice)||0),0)/pV.length;
@@ -1248,7 +1262,7 @@ function renderPvL(){
   if(lV.length){
     document.getElementById('sim-lease').value=Math.round(lMonthAvg)||45000;
   }
- 
+
   if(pV.length&&lV.length){
     // diff は pvl-cols の後で再計算するため、ここでは暫定値
     const diff_temp = (lMaintAnnual+lMonthAvg*12) - pMaintAnnual;
@@ -1268,7 +1282,7 @@ function renderPvL(){
     },0)/pV.length;
     const pGrandAnnual = pMaintAnnual + pTaxAvg;
     lTotalAnnual = lMaintAnnual + lMonthAvg*12;
- 
+
     colsEl.innerHTML=`
       <div class="pvl-col purchase">
         <div class="pvl-col-h">🔑 購入（${pV.length}台平均）</div>
@@ -1294,7 +1308,7 @@ function renderPvL(){
     colsEl.innerHTML='';
   }
 }
- 
+
 // ═══ 損益分岐シミュレーター ═══
 function runSim(){
   const price    =parseFloat(document.getElementById('sim-price')?.value)||2800000;
@@ -1304,18 +1318,18 @@ function runSim(){
   const weighttax=parseFloat(document.getElementById('sim-weighttax')?.value)||32800;
   const jibaiseki=parseFloat(document.getElementById('sim-jibaiseki')?.value)||27840;
   const shaken   =parseFloat(document.getElementById('sim-shaken')?.value)||60000;
- 
+
   // 購入：年間コスト＝メンテ＋自動車税＋重量税(年割)＋自賠責(年割)＋車検工賃(年割)
   const pAnnual = maint + cartax + (weighttax+jibaiseki+shaken)/2;
   const lAnnual = lease*12;  // リース：月額×12（税保険込み前提）
- 
+
   const beEl=document.getElementById('be-val');
   const blEl=document.getElementById('be-lbl');
   const chartEl=document.getElementById('be-chart');
   if(!beEl)return;
- 
+
   const annualSaving=lAnnual-pAnnual;  // リース - 購入の年間差（＋なら購入が安い）
- 
+
   // 10年のバーチャート
   const YEARS=10;
   const pCumul=Array.from({length:YEARS},(_,i)=>price+pAnnual*(i+1));
@@ -1329,7 +1343,7 @@ function runSim(){
       <div class="be-bar" style="flex:1;height:${lh}px;background:var(--purple-dim);border:1px solid rgba(180,127,255,.4)"></div>
     </div>`;
   }).join('')+`<div style="font-size:8px;color:var(--text3);margin:4px 0 -4px;width:100%;display:flex;justify-content:space-between"><span>🔑購入</span><span>📋リース</span></div>`;
- 
+
   if(annualSaving<=0){
     beEl.textContent='購入は常にリースより高コスト';
     blEl.textContent=`年間差：購入が ¥${Math.abs(Math.round(annualSaving)).toLocaleString()} 割高（初期費用除く）`;
@@ -1341,7 +1355,7 @@ function runSim(){
     blEl.innerHTML=`${years.toFixed(1)}年以上使えば購入がお得<br>（年間差額 ¥${Math.round(annualSaving).toLocaleString()} ／ 10年で ¥${Math.round(annualSaving*10).toLocaleString()}）`;
   }
 }
- 
+
 // ═══════════ SETTINGS ═══════════
 function renderSettings(){
   const s=oilSetting;
@@ -1349,7 +1363,7 @@ function renderSettings(){
   document.getElementById('oil-alert-desc').textContent=txt;
   document.getElementById('staff-desc').textContent=staffName||'未設定';
 }
- 
+
 // ═══════════ VEHICLE SETTING MODAL ═══════════
 function openVehicleModal(){
   document.getElementById('vehicle-setting-list').innerHTML=vehicles.map(v=>`
@@ -1405,7 +1419,7 @@ function openVehicleModal(){
       </div>
     </div>`).join('');
 }
- 
+
 function setOwnerType(vid, type, btn){
   const v=vehicles.find(v=>v.id===vid);if(!v)return;
   v.ownerType=type;
@@ -1416,7 +1430,7 @@ function setOwnerType(vid, type, btn){
   document.getElementById(`vsi-lease-${vid}`).style.display=type==='lease'?'':'none';
   document.getElementById(`vsi-tax-section-${vid}`).style.display=type==='purchase'?'':'none';
 }
- 
+
 function saveVehicleSettings(){
   vehicles.forEach(v=>{
     const odo=document.getElementById(`vsi-odo-${v.id}`);
@@ -1441,7 +1455,7 @@ function saveVehicleSettings(){
   closeModal();
   renderHome();
 }
- 
+
 // ═══════════ OIL ALERT ═══════════
 let selectedOilOpt=oilSetting.mode;
 function selectOilOpt(mode){
@@ -1454,7 +1468,7 @@ function selectOilOpt(mode){
   document.getElementById('thresh-km-warn-row').style.display=(mode==='km'||mode==='both')?'flex':'none';
   document.getElementById('thresh-month-row').style.display=(mode==='month'||mode==='both')?'flex':'none';
 }
- 
+
 function saveOilAlertSetting(){
   oilSetting={mode:selectedOilOpt,threshKm:parseInt(document.getElementById('thresh-km').value)||5000,
     warnKm:parseInt(document.getElementById('thresh-km-warn').value)||500,
@@ -1463,14 +1477,14 @@ function saveOilAlertSetting(){
   showToast('✅ オイルアラートを保存しました');
   closeModal();renderSettings();renderHome();
 }
- 
+
 function saveStaff(){
   staffName=document.getElementById('staff-name-input').value.trim();
   localStorage.setItem('staff_name',staffName);
   showToast('✅ 担当者名を保存しました');
   closeModal();renderSettings();
 }
- 
+
 // ═══════════ EXPORT / CLEAR ═══════════
 function exportData(){
   const blob=new Blob([JSON.stringify({vehicles,fuelRecs,oilRecs,maintRecs,oilSetting,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
@@ -1478,22 +1492,21 @@ function exportData(){
   a.download=`maint-${new Date().toISOString().split('T')[0]}.json`;a.click();
   showToast('📤 エクスポートしました');
 }
- 
-function confirmClear(){
-  if(confirm('全データを削除しますか？\n記録・車両設定・PIN以外すべてリセットされます。\n元に戻せません。')){
-    ['fuel_recs','oil_recs','maint_recs','vehicles_v4','oil_setting','staff_name'].forEach(k=>localStorage.removeItem(k));
-    fuelRecs=[];oilRecs=[];maintRecs=[];
-    vehicles=JSON.parse(JSON.stringify(DEFAULT_VEHICLES));
-    oilSetting={mode:'km',threshKm:5000,warnKm:500,threshMonth:3};
-    staffName='';
-    populateSelects();
-    renderHome();
-    renderFuelHist();
-    renderSettings();
-    showToast('🗑️ データを削除しました');
-  }
+
+function execClear(){
+  ['fuel_recs','oil_recs','maint_recs','vehicles_v4','oil_setting','staff_name'].forEach(k=>localStorage.removeItem(k));
+  fuelRecs=[];oilRecs=[];maintRecs=[];
+  vehicles=JSON.parse(JSON.stringify(DEFAULT_VEHICLES));
+  oilSetting={mode:'km',threshKm:5000,warnKm:500,threshMonth:3};
+  staffName='';
+  populateSelects();
+  closeModal();
+  renderHome();
+  renderFuelHist();
+  renderSettings();
+  showToast('🗑️ データを削除しました');
 }
- 
+
 // ═══════════ HIST ITEM ═══════════
 function histItemHTML(r){
   const vname=vehicles.find(v=>v.id===r.vid)?.name||'—';
@@ -1510,7 +1523,7 @@ function histItemHTML(r){
     <div class="hist-sub">${r.content||'—'} ／ ${r.shop||'—'}</div></div>
     <div class="hist-right"><div class="hist-cost">${r.cost?'¥'+parseInt(r.cost).toLocaleString():'—'}</div><div class="hist-date">${r.date}</div></div></div>`;
 }
- 
+
 // ═══════════ MODAL ═══════════
 function openModal(id){
   if(id==='modal-vehicles') openVehicleModal();
@@ -1526,14 +1539,14 @@ function openModal(id){
 }
 function closeModal(){document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('open'));}
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal();}));
- 
+
 // ═══════════ TOAST ═══════════
 function showToast(msg,isErr=false){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='toast'+(isErr?' err':'')+' show';
   setTimeout(()=>t.className='toast',3000);
 }
- 
+
 // ═══════════ INIT ═══════════
 window.addEventListener('DOMContentLoaded',()=>{
   initPin();
@@ -1543,12 +1556,12 @@ window.addEventListener('DOMContentLoaded',()=>{
   renderHome();
   renderFuelHist();
 });
- 
+
 // ═══════════════════════════════
 // PIN AUTHENTICATION
 // ═══════════════════════════════
 let pinBuffer = '';
- 
+
 function pinKey(k) {
   if (pinBuffer.length >= 4) return;
   pinBuffer += k;
@@ -1557,13 +1570,13 @@ function pinKey(k) {
     setTimeout(checkPin, 120);
   }
 }
- 
+
 function pinDel() {
   pinBuffer = pinBuffer.slice(0, -1);
   updatePinDots();
   document.getElementById('pin-error').textContent = '';
 }
- 
+
 function updatePinDots(state) {
   for (let i = 0; i < 4; i++) {
     const d = document.getElementById('pd' + i);
@@ -1572,7 +1585,7 @@ function updatePinDots(state) {
     else if (i < pinBuffer.length) d.classList.add('filled');
   }
 }
- 
+
 function checkPin() {
   const stored = localStorage.getItem('app_pin') || '1234';
   if (pinBuffer === stored) {
@@ -1588,7 +1601,7 @@ function checkPin() {
     }, 900);
   }
 }
- 
+
 function savePin() {
   const cur     = document.getElementById('pin-current').value;
   const newPin  = document.getElementById('pin-new').value;
@@ -1602,15 +1615,15 @@ function savePin() {
   closeModal();
   ['pin-current','pin-new','pin-confirm'].forEach(id => document.getElementById(id).value = '');
 }
- 
+
 function initPin() {
   if (sessionStorage.getItem('pin_ok') === '1') {
     document.getElementById('pin-overlay').style.display = 'none';
   }
 }
- 
+
 </script>
- 
+
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{
